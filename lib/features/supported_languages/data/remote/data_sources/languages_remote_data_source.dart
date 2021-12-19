@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:tdd_translate/features/supported_languages/data/remote/models/language_model.dart';
+import 'package:tdd_translate/features/supported_languages/data/language_model.dart';
 
 abstract class LanguagesRemoteDataSource {
   Future<List<LanguageModel>> fetch();
@@ -16,8 +16,10 @@ class LanguagesRemoteDataSourceImpl implements LanguagesRemoteDataSource {
 
   @override
   Future<List<LanguageModel>> fetch() async {
-    Response<dynamic> response = await dio.get(languagesEndpoint, queryParameters: queryParam);
-    Map<String, dynamic> responseData = json.decode(response.data) as Map<String, dynamic>;
+    Response<dynamic> response =
+        await dio.get(languagesEndpoint, queryParameters: queryParam);
+    Map<String, dynamic> responseData =
+        json.decode(response.data) as Map<String, dynamic>;
     List<dynamic> rawLanguages = responseData["data"]["languages"] as List<dynamic>;
     for (var language in rawLanguages) {
       language as Map<String, dynamic>;

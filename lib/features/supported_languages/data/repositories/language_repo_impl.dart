@@ -2,9 +2,9 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:tdd_translate/core/failure.dart';
+import 'package:tdd_translate/features/supported_languages/data/language_model.dart';
 import 'package:tdd_translate/features/supported_languages/data/local/data_sources/languages_local_data_source.dart';
 import 'package:tdd_translate/features/supported_languages/data/remote/data_sources/languages_remote_data_source.dart';
-import 'package:tdd_translate/features/supported_languages/data/remote/models/language_model.dart';
 import 'package:tdd_translate/features/supported_languages/domain/entities/language.dart';
 import 'package:tdd_translate/features/supported_languages/domain/repositories/languages_repo.dart';
 
@@ -25,13 +25,14 @@ class LanguagesRepoImpl implements LanguagesRepo {
       }
       return Right(remoteLanguageList);
     } catch (e) {
-      return await _localFetch();
+      return _localFetch();
     }
   }
 
-  Future<Either<Failure, List<Language>>> _localFetch() async {
+  Either<Failure, List<Language>> _localFetch() {
     try {
-      List<Language> localLanguageList = await localDataSource.fetch();
+      //TODO: Is it ok to pass empty list?
+      List<Language> localLanguageList = localDataSource.fetch() ?? [];
       return Right(localLanguageList);
     } catch (e) {
       return Left(FetchFailure());

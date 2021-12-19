@@ -4,8 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:tdd_translate/features/supported_languages/data/language_model.dart';
 import 'package:tdd_translate/features/supported_languages/data/remote/data_sources/languages_remote_data_source.dart';
-import 'package:tdd_translate/features/supported_languages/data/remote/models/language_model.dart';
 
 import '../../../../../fixtures/fixture_reader.dart';
 import 'languages_remote_data_source_test.mocks.dart';
@@ -27,7 +27,8 @@ void main() {
   });
 
   void setUpMockDioSuccess() {
-    when(mockDio.get(dataSource.languagesEndpoint, queryParameters: dataSource.queryParam))
+    when(mockDio.get(dataSource.languagesEndpoint,
+            queryParameters: dataSource.queryParam))
         .thenAnswer((_) async {
       return response;
     });
@@ -37,7 +38,8 @@ void main() {
     test("Should perform a get request", () async {
       setUpMockDioSuccess();
       await dataSource.fetch();
-      verify(mockDio.get(dataSource.languagesEndpoint, queryParameters: dataSource.queryParam));
+      verify(mockDio.get(dataSource.languagesEndpoint,
+          queryParameters: dataSource.queryParam));
     });
     test("Should return List<LanguageModel> on fetch", () async {
       setUpMockDioSuccess();
@@ -46,21 +48,23 @@ void main() {
     });
     test("Language list returned from fetching should be same as fixture's language list",
         () async {
-      setUpMockDioSuccess();
+          setUpMockDioSuccess();
       final fetchedLanguageList = await dataSource.fetch();
       final List<dynamic> fixtureRawLanguageList = ((json.decode(languagesFixtureString)
               as Map<String, dynamic>)["data"]["languages"] as List<dynamic>)
           .map((language) => language as Map<String, dynamic>)
           .toList();
 
-      final List<LanguageModel> fixtureLanguageModelList =
-          fixtureRawLanguageList.map((languageMap) => LanguageModel.fromJson(languageMap)).toList();
+      final List<LanguageModel> fixtureLanguageModelList = fixtureRawLanguageList
+          .map((languageMap) => LanguageModel.fromJson(languageMap))
+          .toList();
       expect(fixtureLanguageModelList, equals(fetchedLanguageList));
     });
   });
 
   void setUpMockDioFailure() {
-    when(mockDio.get(dataSource.languagesEndpoint, queryParameters: dataSource.queryParam))
+    when(mockDio.get(dataSource.languagesEndpoint,
+            queryParameters: dataSource.queryParam))
         .thenThrow(DioError(
             requestOptions: RequestOptions(path: dataSource.languagesEndpoint),
             error: "Test Error",
@@ -70,7 +74,8 @@ void main() {
   group("Fetch Supported Languages - Failure cases", () {
     test("Should throw exception", () {
       setUpMockDioFailure();
-      expect(() async => await dataSource.fetch(), throwsA(const TypeMatcher<DioError>()));
+      expect(
+          () async => await dataSource.fetch(), throwsA(const TypeMatcher<DioError>()));
     });
   });
 }

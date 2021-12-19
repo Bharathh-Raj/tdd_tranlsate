@@ -3,9 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:tdd_translate/core/failure.dart';
+import 'package:tdd_translate/features/supported_languages/data/language_model.dart';
 import 'package:tdd_translate/features/supported_languages/data/local/data_sources/languages_local_data_source.dart';
 import 'package:tdd_translate/features/supported_languages/data/remote/data_sources/languages_remote_data_source.dart';
-import 'package:tdd_translate/features/supported_languages/data/remote/models/language_model.dart';
 import 'package:tdd_translate/features/supported_languages/data/repositories/language_repo_impl.dart';
 import 'package:tdd_translate/features/supported_languages/domain/entities/language.dart';
 import 'package:tdd_translate/features/supported_languages/domain/repositories/languages_repo.dart';
@@ -22,12 +22,13 @@ void main() {
   setUp(() {
     remoteDataSource = MockLanguagesRemoteDataSource();
     localDataSource = MockLanguagesLocalDataSource();
-    languagesRepo =
-        LanguagesRepoImpl(remoteDataSource: remoteDataSource, localDataSource: localDataSource);
+    languagesRepo = LanguagesRepoImpl(
+        remoteDataSource: remoteDataSource, localDataSource: localDataSource);
   });
 
   void setUpRemoteFetchSuccess() {
-    when(remoteDataSource.fetch()).thenAnswer((realInvocation) async => fetchTestLanguageList());
+    when(remoteDataSource.fetch())
+        .thenAnswer((realInvocation) async => fetchTestLanguageList());
   }
 
   group("Fetch - Success Cases", () {
@@ -70,8 +71,8 @@ void main() {
         final Either<Failure, List<Language>> langList = await languagesRepo.fetch();
         langList.fold(
             (l) => expect(langList.isLeft(), isFalse),
-            (r) => expect(
-                localDataSource.write(r as List<LanguageModel>), isInstanceOf<Future<void>>()));
+            (r) => expect(localDataSource.write(r as List<LanguageModel>),
+                isInstanceOf<Future<void>>()));
       });
 
       test("LocalWrite failure should not affect the language list return", () async {
@@ -85,7 +86,7 @@ void main() {
 
   void setUpRemoteFetchFailure() {
     when(remoteDataSource.fetch()).thenThrow(Exception());
-    when(localDataSource.fetch()).thenAnswer((realInvocation) async => fetchTestLanguageList());
+    when(localDataSource.fetch()).thenReturn(fetchTestLanguageList());
   }
 
   group("Remote Fetch Failure", () {
@@ -101,7 +102,8 @@ void main() {
       expect(langList, isInstanceOf<Either<Failure, List<Language>>>());
     });
 
-    test("isRight should be true on remote fetch failure but local fetch succeeds", () async {
+    test("isRight should be true on remote fetch failure but local fetch succeeds",
+        () async {
       setUpRemoteFetchFailure();
       final Either<Failure, List<Language>> langList = await languagesRepo.fetch();
       expect(langList.isRight(), isTrue);
