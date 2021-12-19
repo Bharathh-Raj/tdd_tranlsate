@@ -4,22 +4,22 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:tdd_translate/features/supported_languages/data/remote/data_sources/supported_languages_remote_data_source.dart';
+import 'package:tdd_translate/features/supported_languages/data/remote/data_sources/languages_remote_data_source.dart';
 import 'package:tdd_translate/features/supported_languages/data/remote/models/language_model.dart';
 
 import '../../../../../fixtures/fixture_reader.dart';
-import 'fetch_languages_remote_data_source_test.mocks.dart';
+import 'languages_remote_data_source_test.mocks.dart';
 
 @GenerateMocks([Dio])
 void main() {
-  late SupportedLanguagesRemoteDataSourceImpl dataSource;
+  late LanguagesRemoteDataSourceImpl dataSource;
   late MockDio mockDio;
   late Response response;
   late String languagesFixtureString;
 
   setUp(() {
     mockDio = MockDio();
-    dataSource = SupportedLanguagesRemoteDataSourceImpl(dio: mockDio);
+    dataSource = LanguagesRemoteDataSourceImpl(dio: mockDio);
     languagesFixtureString = fixture('supported_languages.json');
     response = Response(
         requestOptions: RequestOptions(path: dataSource.languagesEndpoint),

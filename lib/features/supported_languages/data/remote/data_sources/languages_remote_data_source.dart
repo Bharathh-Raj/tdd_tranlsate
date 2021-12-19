@@ -3,16 +3,16 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:tdd_translate/features/supported_languages/data/remote/models/language_model.dart';
 
-abstract class SupportedLanguagesRemoteDataSource {
+abstract class LanguagesRemoteDataSource {
   Future<List<LanguageModel>> fetch();
 }
 
-class SupportedLanguagesRemoteDataSourceImpl implements SupportedLanguagesRemoteDataSource {
+class LanguagesRemoteDataSourceImpl implements LanguagesRemoteDataSource {
   final Dio dio;
   final String languagesEndpoint = "languages";
   final Map<String, dynamic> queryParam = {"target": "en"};
 
-  SupportedLanguagesRemoteDataSourceImpl({required this.dio});
+  LanguagesRemoteDataSourceImpl({required this.dio});
 
   @override
   Future<List<LanguageModel>> fetch() async {

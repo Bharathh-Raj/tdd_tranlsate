@@ -1,12 +1,12 @@
 import 'package:tdd_translate/features/supported_languages/data/remote/models/language_model.dart';
 
-abstract class SupportedLanguagesLocalDataSource {
+abstract class LanguagesLocalDataSource {
   Future<List<LanguageModel>> fetch();
 
   Future<void> write(List<LanguageModel> languageList);
 }
 
-class SupportedLanguagesLocalDataSourceImpl implements SupportedLanguagesLocalDataSource {
+class LanguagesLocalDataSourceImpl implements LanguagesLocalDataSource {
   @override
   Future<List<LanguageModel>> fetch() {
     // TODO: implement fetch
