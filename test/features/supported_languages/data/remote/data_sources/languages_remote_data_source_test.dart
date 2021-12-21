@@ -46,7 +46,7 @@ void main() {
     });
     test("Language list returned from fetching should be same as fixture's language list",
         () async {
-          setUpMockDioSuccess();
+      setUpMockDioSuccess();
       final fetchedLanguageList = await dataSource.fetch();
       final List<dynamic> fixtureRawLanguageList =
           (languagesFixtureMap["data"]["languages"] as List<dynamic>)
