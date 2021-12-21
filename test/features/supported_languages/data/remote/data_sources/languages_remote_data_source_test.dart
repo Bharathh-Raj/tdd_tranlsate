@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -15,15 +13,15 @@ void main() {
   late LanguagesRemoteDataSourceImpl dataSource;
   late MockDio mockDio;
   late Response response;
-  late String languagesFixtureString;
+  late Map<String, dynamic> languagesFixtureMap;
 
   setUp(() {
     mockDio = MockDio();
     dataSource = LanguagesRemoteDataSourceImpl(dio: mockDio);
-    languagesFixtureString = fixture('supported_languages.json');
+    languagesFixtureMap = fixtureAsMap('supported_languages.json');
     response = Response(
         requestOptions: RequestOptions(path: dataSource.languagesEndpoint),
-        data: languagesFixtureString);
+        data: languagesFixtureMap);
   });
 
   void setUpMockDioSuccess() {
@@ -48,12 +46,12 @@ void main() {
     });
     test("Language list returned from fetching should be same as fixture's language list",
         () async {
-      setUpMockDioSuccess();
+          setUpMockDioSuccess();
       final fetchedLanguageList = await dataSource.fetch();
-      final List<dynamic> fixtureRawLanguageList = ((json.decode(languagesFixtureString)
-              as Map<String, dynamic>)["data"]["languages"] as List<dynamic>)
-          .map((language) => language as Map<String, dynamic>)
-          .toList();
+      final List<dynamic> fixtureRawLanguageList =
+          (languagesFixtureMap["data"]["languages"] as List<dynamic>)
+              .map((language) => language as Map<String, dynamic>)
+              .toList();
 
       final List<LanguageModel> fixtureLanguageModelList = fixtureRawLanguageList
           .map((languageMap) => LanguageModel.fromJson(languageMap))

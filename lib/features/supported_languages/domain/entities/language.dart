@@ -31,7 +31,13 @@ abstract class Language {
   }
 
   @override
-  bool operator ==(Object other) {
-    return other is Language && code == other.code && name == other.name;
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Language &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          code == other.code;
+
+  @override
+  int get hashCode => name.hashCode ^ code.hashCode;
 }

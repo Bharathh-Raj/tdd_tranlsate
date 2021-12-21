@@ -29,20 +29,20 @@ void main() {
   group("Fetch success", () {
     test("Should call fetch method from repository", () async {
       setupFetchSuccess();
-      await fetchLanguagesUseCase(NoParam());
+      await fetchLanguagesUseCase(const NoParam());
       verify(mockLanguagesRepo.fetch());
     });
 
     test("should be of type Either<Failure, List<Language>> on success", () async {
       setupFetchSuccess();
-      final langList = await fetchLanguagesUseCase(NoParam());
+      final langList = await fetchLanguagesUseCase(const NoParam());
       expect(langList, isInstanceOf<Either<Failure, List<Language>>>());
     });
 
     test("isRight should be true on success", () async {
       setupFetchSuccess();
       final Either<Failure, List<Language>> langList =
-          await fetchLanguagesUseCase(NoParam());
+          await fetchLanguagesUseCase(const NoParam());
       expect(langList.isRight(), isTrue);
     });
   });
@@ -55,7 +55,7 @@ void main() {
     test("isLeft should be true on success", () async {
       setupFetchFailure();
       final Either<Failure, List<Language>> langList =
-          await fetchLanguagesUseCase(NoParam());
+          await fetchLanguagesUseCase(const NoParam());
       expect(langList.isLeft(), isTrue);
     });
   });

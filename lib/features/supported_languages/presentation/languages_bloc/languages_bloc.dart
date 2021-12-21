@@ -6,25 +6,22 @@ import 'package:tdd_translate/features/supported_languages/domain/entities/langu
 import 'package:tdd_translate/features/supported_languages/domain/use_cases/fetch_languages_use_case.dart';
 import 'package:tdd_translate/features/supported_languages/presentation/languages_bloc/bloc.dart';
 
-import 'languages_event.dart';
-import 'languages_state.dart';
-
 class LanguagesBloc extends Bloc<LanguagesEvent, LanguagesState> {
   final FetchLanguagesUseCase fetchLanguagesUseCase;
 
   LanguagesBloc({required this.fetchLanguagesUseCase})
       : super(const LanguagesState.initial()) {
-    on<LanguagesEvent>((event, emit) {
-      event.map(fetch: (fetchEvent) async {
-        emit(await _mapFetchEventToState());
+    on<LanguagesEvent>((event, emit) async {
+      await event.map(fetch: (fetchEvent) async {
+        await _mapFetchEventToState(emit);
       });
     });
   }
 
-  Future<LanguagesState> _mapFetchEventToState() async {
+  Future<void> _mapFetchEventToState(Emitter emit) async {
     final Either<Failure, List<Language>> fetchResult =
         await fetchLanguagesUseCase(const NoParam());
-    return fetchResult.fold((failure) => LanguagesState.failure(failure),
-        (languageList) => LanguagesState.fetched(languageList));
+    emit(fetchResult.fold((failure) => LanguagesState.failure(failure),
+        (languageList) => LanguagesState.fetched(languageList)));
   }
 }

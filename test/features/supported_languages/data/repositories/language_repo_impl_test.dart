@@ -89,6 +89,11 @@ void main() {
     when(localDataSource.fetch()).thenReturn(fetchTestLanguageList());
   }
 
+  void setUpRemoteFetchFailureLocalFetchNull() {
+    when(remoteDataSource.fetch()).thenThrow(Exception());
+    when(localDataSource.fetch()).thenReturn(null);
+  }
+
   group("Remote Fetch Failure", () {
     test("Remote Fetch Failure triggers local fetch", () async {
       setUpRemoteFetchFailure();
@@ -107,6 +112,13 @@ void main() {
       setUpRemoteFetchFailure();
       final Either<Failure, List<Language>> langList = await languagesRepo.fetch();
       expect(langList.isRight(), isTrue);
+    });
+
+    test("isLeft should be true on remote fetch failure and local fetch is null",
+        () async {
+      setUpRemoteFetchFailureLocalFetchNull();
+      final Either<Failure, List<Language>> langList = await languagesRepo.fetch();
+      expect(langList.isLeft(), isTrue);
     });
   });
 

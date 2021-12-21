@@ -11,7 +11,7 @@ import 'languages_local_data_source_test.mocks.dart';
 @GenerateMocks([Box])
 void main() {
   late LanguagesLocalDataSource languagesLocalDataSource;
-  late MockBox mockBox;
+  late MockBox<List<Map<String, dynamic>>> mockBox;
 
   final List<Map<String, dynamic>> langListRawMap =
       (fixtureAsMap('supported_languages.json')["data"]["languages"] as List<dynamic>)

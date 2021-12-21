@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:tdd_translate/features/supported_languages/data/language_model.dart';
 
@@ -18,8 +16,7 @@ class LanguagesRemoteDataSourceImpl implements LanguagesRemoteDataSource {
   Future<List<LanguageModel>> fetch() async {
     Response<dynamic> response =
         await dio.get(languagesEndpoint, queryParameters: queryParam);
-    Map<String, dynamic> responseData =
-        json.decode(response.data) as Map<String, dynamic>;
+    Map<String, dynamic> responseData = response.data as Map<String, dynamic>;
     List<dynamic> rawLanguages = responseData["data"]["languages"] as List<dynamic>;
     for (var language in rawLanguages) {
       language as Map<String, dynamic>;

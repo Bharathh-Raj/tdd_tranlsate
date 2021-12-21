@@ -15,7 +15,10 @@ class LanguagesLocalDataSourceImpl implements LanguagesLocalDataSource {
 
   @override
   List<LanguageModel>? fetch() {
-    List<Map<String, dynamic>>? langListMap = hiveBox.get(_languageListKey);
+    final List<dynamic>? langList = hiveBox.get(_languageListKey);
+    List<Map<String, dynamic>>? langListMap =
+        langList?.map((e) => Map<String, dynamic>.from(e)).toList();
+    // (hiveBox.get(_languageListKey) as List<dynamic>).cast<Map<String, dynamic>>();
     if (langListMap != null) {
       List<LanguageModel> langModelList =
           langListMap.map((lang) => LanguageModel.fromJson(lang)).toList();

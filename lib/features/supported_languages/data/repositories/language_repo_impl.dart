@@ -25,17 +25,20 @@ class LanguagesRepoImpl implements LanguagesRepo {
       }
       return Right(remoteLanguageList);
     } catch (e) {
-      return _localFetch();
+      return _localFetch(e);
     }
   }
 
-  Either<Failure, List<Language>> _localFetch() {
+  Either<Failure, List<Language>> _localFetch(Object e) {
     try {
       //TODO: Is it ok to pass empty list?
-      List<Language> localLanguageList = localDataSource.fetch() ?? [];
-      return Right(localLanguageList);
+      List<Language>? localLanguageList = localDataSource.fetch();
+      if (localLanguageList != null) {
+        return Right(localLanguageList);
+      }
+      return Left(FetchFailure(errorObject: e));
     } catch (e) {
-      return Left(FetchFailure());
+      return Left(FetchFailure(errorObject: e));
     }
   }
 }
