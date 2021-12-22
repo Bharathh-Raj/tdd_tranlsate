@@ -22,7 +22,7 @@ class LanguagesLocalDataSourceImpl implements LanguagesLocalDataSource {
   List<LanguageModel>? fetch() {
     final List<dynamic>? langList = hiveBox.get(_languageListKey);
     List<Map<String, dynamic>>? langListMap =
-    langList?.map((e) => Map<String, dynamic>.from(e)).toList();
+        langList?.map((e) => Map<String, dynamic>.from(e)).toList();
     // (hiveBox.get(_languageListKey) as List<dynamic>).cast<Map<String, dynamic>>();
     if (langListMap != null) {
       List<LanguageModel> langModelList =
@@ -34,7 +34,7 @@ class LanguagesLocalDataSourceImpl implements LanguagesLocalDataSource {
   @override
   Future<void> write(List<LanguageModel> languageList) async {
     List<Map<String, dynamic>> langListMap =
-    languageList.map((lang) => lang.toJson()).toList();
+        languageList.map((lang) => lang.toJson()).toList();
     return await hiveBox.put(_languageListKey, langListMap);
   }
 
