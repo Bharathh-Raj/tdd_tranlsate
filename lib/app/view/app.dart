@@ -15,7 +15,8 @@ class App extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: BlocProvider<LanguagesBloc>(
-          create: (context) => LanguagesBloc(fetchLanguagesUseCase: locator())
+          create: (context) => LanguagesBloc(
+              fetchLanguagesUseCase: locator(), getSelectedLangCodeUseCase: locator())
             ..add(const LanguagesEvent.fetch()),
           child: const SearchPage()),
     );

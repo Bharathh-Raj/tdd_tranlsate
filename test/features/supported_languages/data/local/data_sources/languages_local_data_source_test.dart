@@ -11,7 +11,7 @@ import 'languages_local_data_source_test.mocks.dart';
 @GenerateMocks([Box])
 void main() {
   late LanguagesLocalDataSource languagesLocalDataSource;
-  late MockBox<List<Map<String, dynamic>>> mockBox;
+  late MockBox mockBox;
 
   final List<Map<String, dynamic>> langListRawMap =
       (fixtureAsMap('supported_languages.json')["data"]["languages"] as List<dynamic>)
@@ -69,6 +69,46 @@ void main() {
       verify(mockBox.put("LangListKey", [
         {"name": "Tamil", "language": "ta"}
       ]));
+    });
+  });
+
+  group("GetSelectedLanguageName", () {
+    void setUpGetSelectedLangSuccess() {
+      when(mockBox.get('SelectedLangCodeKey')).thenReturn("en");
+    }
+
+    test("get() should be called", () {
+      setUpGetSelectedLangSuccess();
+      languagesLocalDataSource.getSelectedLanguageCode();
+      verify(mockBox.get('SelectedLangCodeKey'));
+    });
+
+    test("LanguageCode should be returned on fetch success", () {
+      setUpGetSelectedLangSuccess();
+      final String? selectedLangCode = languagesLocalDataSource.getSelectedLanguageCode();
+      expect(selectedLangCode, "en");
+    });
+
+    void setUpNotSelectedAnyLang() {
+      when(mockBox.get('SelectedLangCodeKey')).thenReturn(null);
+    }
+
+    test("Should return null when no language selected", () {
+      setUpNotSelectedAnyLang();
+      final String? selectedLangCode = languagesLocalDataSource.getSelectedLanguageCode();
+      expect(selectedLangCode, null);
+    });
+  });
+
+  group("PutSelectedLanguageCode", () {
+    void setUpWriteSuccess() {
+      when(mockBox.put("SelectedLangCodeKey", "en")).thenAnswer((_) async {});
+    }
+
+    test("put() should be called", () async {
+      setUpWriteSuccess();
+      await languagesLocalDataSource.putSelectedLanguageCode(langCode: "en");
+      verify(mockBox.put("SelectedLangCodeKey", "en"));
     });
   });
 }

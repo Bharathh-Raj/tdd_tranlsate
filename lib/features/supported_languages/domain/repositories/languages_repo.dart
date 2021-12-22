@@ -4,4 +4,10 @@ import 'package:tdd_translate/features/supported_languages/domain/entities/langu
 
 abstract class LanguagesRepo {
   Future<Either<Failure, List<Language>>> fetch();
+
+  String getSelectedLanguageCode();
+
+  Future<Either<Failure, void>> putSelectedLanguageCode({required String langCode});
+
+  String get defaultLangCode;
 }

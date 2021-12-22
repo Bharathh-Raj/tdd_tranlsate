@@ -15,6 +15,9 @@ class LanguagesRepoImpl implements LanguagesRepo {
   LanguagesRepoImpl({required this.remoteDataSource, required this.localDataSource});
 
   @override
+  String get defaultLangCode => "en";
+
+  @override
   Future<Either<Failure, List<Language>>> fetch() async {
     try {
       List<Language> remoteLanguageList = await remoteDataSource.fetch();
@@ -37,6 +40,28 @@ class LanguagesRepoImpl implements LanguagesRepo {
         return Right(localLanguageList);
       }
       return Left(FetchFailure(errorObject: e));
+    } catch (e) {
+      return Left(FetchFailure(errorObject: e));
+    }
+  }
+
+  @override
+  String getSelectedLanguageCode() {
+    try {
+      final String selectedLangCode =
+          localDataSource.getSelectedLanguageCode() ?? defaultLangCode;
+      return selectedLangCode;
+    } catch (e) {
+      return defaultLangCode;
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> putSelectedLanguageCode(
+      {required String langCode}) async {
+    try {
+      await localDataSource.putSelectedLanguageCode(langCode: langCode);
+      return const Right(Unit);
     } catch (e) {
       return Left(FetchFailure(errorObject: e));
     }

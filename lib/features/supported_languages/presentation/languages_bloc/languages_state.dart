@@ -9,7 +9,8 @@ part 'languages_state.freezed.dart';
 class LanguagesState with _$LanguagesState {
   const factory LanguagesState.initial() = _initial;
 
-  const factory LanguagesState.fetched(List<Language> languageList) = _fetched;
+  const factory LanguagesState.fetched(
+      List<Language> languageList, String selectedLangCode) = _fetched;
 
   const factory LanguagesState.failure(Failure failure) = _failure;
 }

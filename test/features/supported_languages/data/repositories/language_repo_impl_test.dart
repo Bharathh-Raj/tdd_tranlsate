@@ -134,4 +134,83 @@ void main() {
       expect(langList.isLeft(), isTrue);
     });
   });
+
+  group("getSelectedLanguageCode()", () {
+    test("getSelectedLanguageCode() of localDataSource should be called", () {
+      languagesRepo.getSelectedLanguageCode();
+      verify(localDataSource.getSelectedLanguageCode());
+    });
+
+    test("Default langCode should be english", () {
+      expect(languagesRepo.defaultLangCode, "en");
+    });
+
+    void setUpGetSelectedLangSuccess() {
+      when(localDataSource.getSelectedLanguageCode()).thenReturn("en");
+    }
+
+    test("en should be returned on fetch success", () {
+      setUpGetSelectedLangSuccess();
+      final String langList = languagesRepo.getSelectedLanguageCode();
+      expect(langList, "en");
+    });
+
+    void setUpGetSelectedLangNull() {
+      when(localDataSource.getSelectedLanguageCode()).thenReturn(null);
+    }
+
+    test("en should be returned on fetch null", () {
+      setUpGetSelectedLangNull();
+      final String langList = languagesRepo.getSelectedLanguageCode();
+      expect(langList, "en");
+    });
+
+    void setUpGetSelectedLangFailure() {
+      when(localDataSource.getSelectedLanguageCode()).thenThrow(Exception());
+    }
+
+    test("en should be returned on fetch failure", () {
+      setUpGetSelectedLangFailure();
+      final String langList = languagesRepo.getSelectedLanguageCode();
+      expect(langList, "en");
+    });
+  });
+
+  group("putSelectedLanguageCode", () {
+    test("putSelectedLanguageCode() of localDataSource must be called", () {
+      languagesRepo.putSelectedLanguageCode(langCode: "en");
+      verify(localDataSource.putSelectedLanguageCode(langCode: "en"));
+    });
+
+    void setUpPutSelectedLangSuccess() {
+      when(localDataSource.putSelectedLanguageCode(langCode: "en"))
+          .thenAnswer((_) async {});
+    }
+
+    test("isRight should be true on successful fetch", () async {
+      setUpPutSelectedLangSuccess();
+      Either<Failure, void> selectedLangCode =
+          await languagesRepo.putSelectedLanguageCode(langCode: "en");
+      expect(selectedLangCode.isRight(), isTrue);
+    });
+
+    test("Right(Unit) should be returned on successful fetch", () async {
+      setUpPutSelectedLangSuccess();
+      Either<Failure, void> selectedLangCode =
+          await languagesRepo.putSelectedLanguageCode(langCode: "en");
+      expect(selectedLangCode, const Right(Unit));
+    });
+
+    void setUpPutSelectedLangFailure() {
+      when(localDataSource.putSelectedLanguageCode(langCode: "en"))
+          .thenThrow(Exception());
+    }
+
+    test("isLeft should be true on failure fetch", () async {
+      setUpPutSelectedLangFailure();
+      Either<Failure, void> selectedLangCode =
+          await languagesRepo.putSelectedLanguageCode(langCode: "en");
+      expect(selectedLangCode.isLeft(), isTrue);
+    });
+  });
 }
