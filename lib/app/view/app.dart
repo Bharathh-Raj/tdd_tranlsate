@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tdd_translate/core/locator.dart';
+import 'package:tdd_translate/features/detect_language/presentation/detect_languages_bloc/bloc.dart';
 import 'package:tdd_translate/features/supported_languages/presentation/languages_bloc/bloc.dart';
 import 'package:tdd_translate/features/translate/view/pages/search_page.dart';
 
@@ -14,13 +15,18 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: BlocProvider<LanguagesBloc>(
+      home: MultiBlocProvider(providers: [
+        BlocProvider<LanguagesBloc>(
           create: (context) => LanguagesBloc(
               fetchLanguagesUseCase: locator(),
               getSelectedLangCodeUseCase: locator(),
               putSelectedLangCodeUseCase: locator())
             ..add(const LanguagesEvent.fetch()),
-          child: const SearchPage()),
+        ),
+        BlocProvider<DetectLanguagesBloc>(
+          create: (context) => DetectLanguagesBloc(detectLangUseCase: locator()),
+        )
+      ], child: const SearchPage()),
     );
   }
 }

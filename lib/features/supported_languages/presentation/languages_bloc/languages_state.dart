@@ -10,7 +10,7 @@ class LanguagesState with _$LanguagesState {
   const factory LanguagesState.initial() = _initial;
 
   const factory LanguagesState.fetched(
-      List<Language> languageList, String selectedLangCode) = _fetched;
+      List<Language> languageList, String selectedLangCode) = Fetched;
 
   const factory LanguagesState.failure(Failure failure) = _failure;
 }

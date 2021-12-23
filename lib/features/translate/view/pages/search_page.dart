@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tdd_translate/features/detect_language/presentation/detect_languages_bloc/bloc.dart';
+import 'package:tdd_translate/features/detect_language/presentation/widgets/detected_languages_widget.dart';
 import 'package:tdd_translate/features/supported_languages/presentation/widgets/language_selection_widget.dart';
 
 class SearchPage extends StatefulWidget {
@@ -28,14 +31,18 @@ class _SearchPageState extends State<SearchPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            const LanguageSelectionWidget(),
             TextField(
               controller: textEditingController,
               textInputAction: TextInputAction.go,
             ),
-            const LanguageSelectionWidget(),
+            const DetectedLanguagesWidget(),
             ElevatedButton(
-              onPressed: () {},
-              child: const Text("Translate"),
+              onPressed: () {
+                context.read<DetectLanguagesBloc>().add(
+                    DetectLanguagesEvent.detect(inputText: textEditingController.text));
+              },
+              child: const Text("Detect"),
             )
           ],
         ),
