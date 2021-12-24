@@ -11,6 +11,7 @@ import 'package:tdd_translate/features/supported_languages/data/remote/data_sour
 import 'package:tdd_translate/features/supported_languages/data/repositories/language_repo_impl.dart';
 import 'package:tdd_translate/features/supported_languages/domain/repositories/languages_repo.dart';
 import 'package:tdd_translate/features/supported_languages/domain/use_cases/fetch_languages_use_case.dart';
+import 'package:tdd_translate/features/supported_languages/domain/use_cases/get_lang_from_code_use_case.dart';
 import 'package:tdd_translate/features/supported_languages/domain/use_cases/get_selected_lang_code.dart';
 import 'package:tdd_translate/features/supported_languages/domain/use_cases/put_selected_lang_code_use_case.dart';
 
@@ -48,6 +49,9 @@ Future<void> _initFetchLanguagesDependencies(GetIt locator) async {
 
   locator.registerLazySingleton<PutSelectedLangCodeUseCase>(
       () => PutSelectedLangCodeUseCase(languagesRepo: locator()));
+
+  locator.registerLazySingleton<GetLangFromCodeUseCase>(
+      () => GetLangFromCodeUseCase(languagesRepo: locator()));
 }
 
 void _initDetectLanguagesDependencies(GetIt locator) {

@@ -5,19 +5,26 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:tdd_translate/core/failure.dart';
 import 'package:tdd_translate/features/detect_language/data/detection_model.dart';
+import 'package:tdd_translate/features/detect_language/domain/entities/lang_detection.dart';
 import 'package:tdd_translate/features/detect_language/domain/use_cases/detect_lang_use_case.dart';
 import 'package:tdd_translate/features/detect_language/presentation/detect_languages_bloc/bloc.dart';
+import 'package:tdd_translate/features/supported_languages/data/language_model.dart';
+import 'package:tdd_translate/features/supported_languages/domain/use_cases/get_lang_from_code_use_case.dart';
 
 import 'detect_languages_bloc_test.mocks.dart';
 
-@GenerateMocks([DetectLangUseCase])
+@GenerateMocks([DetectLangUseCase, GetLangFromCodeUseCase])
 void main() {
   late DetectLanguagesBloc detectLanguagesBloc;
   late MockDetectLangUseCase mockDetectLangUseCase;
+  late MockGetLangFromCodeUseCase mockGetLangFromCodeUseCase;
 
   setUp(() {
     mockDetectLangUseCase = MockDetectLangUseCase();
-    detectLanguagesBloc = DetectLanguagesBloc(detectLangUseCase: mockDetectLangUseCase);
+    mockGetLangFromCodeUseCase = MockGetLangFromCodeUseCase();
+    detectLanguagesBloc = DetectLanguagesBloc(
+        detectLangUseCase: mockDetectLangUseCase,
+        getLangFromCodeUseCase: mockGetLangFromCodeUseCase);
   });
 
   tearDown(() {
@@ -34,22 +41,69 @@ void main() {
           Right([DetectionModel(isReliable: true, confidence: 1, language: "en")]));
     }
 
-    test("detectLangUseCase must be called", () async {
-      setUpDetectSuccess();
-      detectLanguagesBloc.add(const DetectLanguagesEvent.detect(inputText: "test"));
-      await untilCalled(mockDetectLangUseCase("test"));
-      verify(mockDetectLangUseCase("test"));
-    });
+    void setUpGetLangFromCodeSuccess() {
+      when(mockGetLangFromCodeUseCase("en"))
+          .thenAnswer((_) async => const LanguageModel(language: "en", name: "English"));
+    }
+
+    blocTest<DetectLanguagesBloc, DetectLanguagesState>(
+      "detectLangUseCase must be called",
+      build: () => detectLanguagesBloc,
+      setUp: () {
+        setUpDetectSuccess();
+        setUpGetLangFromCodeSuccess();
+      },
+      act: (bloc) => bloc.add(const DetectLanguagesEvent.detect(inputText: "test")),
+      verify: (bloc) => mockDetectLangUseCase("test"),
+    );
+
+    blocTest<DetectLanguagesBloc, DetectLanguagesState>(
+      "getLangFromCodeUseCase must be called",
+      build: () => detectLanguagesBloc,
+      setUp: () {
+        setUpDetectSuccess();
+        setUpGetLangFromCodeSuccess();
+      },
+      act: (bloc) => bloc.add(const DetectLanguagesEvent.detect(inputText: "test")),
+      verify: (bloc) => mockGetLangFromCodeUseCase("en"),
+    );
 
     blocTest<DetectLanguagesBloc, DetectLanguagesState>(
       "Loading state and Detected state must be emitted on detection success",
       build: () => detectLanguagesBloc,
-      setUp: setUpDetectSuccess,
+      setUp: () {
+        setUpDetectSuccess();
+        setUpGetLangFromCodeSuccess();
+      },
       act: (bloc) => bloc.add(const DetectLanguagesEvent.detect(inputText: "test")),
       expect: () => <DetectLanguagesState>[
         const DetectLanguagesState.loading(),
         DetectLanguagesState.detected(inputText: "test", detectionList: [
-          DetectionModel(isReliable: true, confidence: 1, language: "en")
+          LangDetection(
+              detection: DetectionModel(isReliable: true, confidence: 1, language: "en"),
+              language: const LanguageModel(name: "English", language: "en"))
+        ])
+      ],
+    );
+
+    void setUpGetLangFromCodeNull() {
+      when(mockGetLangFromCodeUseCase("en")).thenAnswer((_) async => null);
+    }
+
+    blocTest<DetectLanguagesBloc, DetectLanguagesState>(
+      "Loading state and Detected state with language as null must be emitted on detection success but getLangFromCode returns null",
+      build: () => detectLanguagesBloc,
+      setUp: () {
+        setUpDetectSuccess();
+        setUpGetLangFromCodeNull();
+      },
+      act: (bloc) => bloc.add(const DetectLanguagesEvent.detect(inputText: "test")),
+      expect: () => <DetectLanguagesState>[
+        const DetectLanguagesState.loading(),
+        DetectLanguagesState.detected(inputText: "test", detectionList: [
+          LangDetection(
+              detection: DetectionModel(isReliable: true, confidence: 1, language: "en"),
+              language: null)
         ])
       ],
     );

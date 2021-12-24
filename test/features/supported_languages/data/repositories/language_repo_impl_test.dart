@@ -213,4 +213,32 @@ void main() {
       expect(selectedLangCode.isLeft(), isTrue);
     });
   });
+
+  group("getLangFromCode() method test", () {
+    void setUpLocalFetchSuccess() {
+      when(localDataSource.fetch()).thenReturn(fetchTestLanguageList());
+    }
+
+    void setUpLocalFetchNull() {
+      when(localDataSource.fetch()).thenReturn(null);
+    }
+
+    test("fetch() method from localDataSource must be called", () {
+      setUpLocalFetchSuccess();
+      languagesRepo.getLangFromCode(langCode: "en");
+      verify(localDataSource.fetch());
+    });
+
+    test("Language should be returned on successful match", () {
+      setUpLocalFetchSuccess();
+      final Language? lang = languagesRepo.getLangFromCode(langCode: "en");
+      expect(lang, const LanguageModel(name: "English", language: "en"));
+    });
+
+    test("null should be returned when lang", () {
+      setUpLocalFetchNull();
+      final Language? lang = languagesRepo.getLangFromCode(langCode: "test");
+      expect(lang, isNull);
+    });
+  });
 }

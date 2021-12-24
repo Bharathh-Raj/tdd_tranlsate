@@ -66,4 +66,12 @@ class LanguagesRepoImpl implements LanguagesRepo {
       return Left(FetchFailure(errorObject: e));
     }
   }
+
+  @override
+  Language? getLangFromCode({required String langCode}) {
+    final List<LanguageModel>? langList = localDataSource.fetch();
+    if (langList != null) {
+      return langList.firstWhere((lang) => lang.code == langCode);
+    }
+  }
 }
