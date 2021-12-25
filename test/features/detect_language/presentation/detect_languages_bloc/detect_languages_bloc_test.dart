@@ -54,7 +54,7 @@ void main() {
         setUpGetLangFromCodeSuccess();
       },
       act: (bloc) => bloc.add(const DetectLanguagesEvent.detect(inputText: "test")),
-      verify: (bloc) => mockDetectLangUseCase("test"),
+      verify: (bloc) => verify(mockDetectLangUseCase("test")),
     );
 
     blocTest<DetectLanguagesBloc, DetectLanguagesState>(
@@ -65,7 +65,7 @@ void main() {
         setUpGetLangFromCodeSuccess();
       },
       act: (bloc) => bloc.add(const DetectLanguagesEvent.detect(inputText: "test")),
-      verify: (bloc) => mockGetLangFromCodeUseCase("en"),
+      verify: (bloc) => verify(mockGetLangFromCodeUseCase("en")),
     );
 
     blocTest<DetectLanguagesBloc, DetectLanguagesState>(
