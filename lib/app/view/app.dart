@@ -4,6 +4,7 @@ import 'package:tdd_translate/core/locator.dart';
 import 'package:tdd_translate/features/detect_language/presentation/detect_languages_bloc/bloc.dart';
 import 'package:tdd_translate/features/supported_languages/presentation/languages_bloc/bloc.dart';
 import 'package:tdd_translate/features/translate/view/pages/search_page.dart';
+import 'package:tdd_translate/features/translate/view/translate_bloc/bloc.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -26,7 +27,13 @@ class App extends StatelessWidget {
         BlocProvider<DetectLanguagesBloc>(
           create: (context) => DetectLanguagesBloc(
               detectLangUseCase: locator(), getLangFromCodeUseCase: locator()),
-        )
+        ),
+        BlocProvider<TranslateBloc>(
+          create: (context) => TranslateBloc(
+            getLangFromCodeUseCase: locator(),
+            translateUseCase: locator(),
+          ),
+        ),
       ], child: const SearchPage()),
     );
   }

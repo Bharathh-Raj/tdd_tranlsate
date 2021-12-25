@@ -14,6 +14,10 @@ import 'package:tdd_translate/features/supported_languages/domain/use_cases/fetc
 import 'package:tdd_translate/features/supported_languages/domain/use_cases/get_lang_from_code_use_case.dart';
 import 'package:tdd_translate/features/supported_languages/domain/use_cases/get_selected_lang_code.dart';
 import 'package:tdd_translate/features/supported_languages/domain/use_cases/put_selected_lang_code_use_case.dart';
+import 'package:tdd_translate/features/translate/data/data_source/remote_translate_ds.dart';
+import 'package:tdd_translate/features/translate/data/tranlate_repo_impl.dart';
+import 'package:tdd_translate/features/translate/domain/translate_repo.dart';
+import 'package:tdd_translate/features/translate/domain/translate_use_case.dart';
 
 final GetIt locator = GetIt.instance;
 
@@ -26,7 +30,8 @@ Future<void> init() async {
   Hive.init(directory.path);
 
   await _initFetchLanguagesDependencies(locator);
-  _initDetectLanguagesDependencies(locator);
+  _initDetectLanguagesDependencies();
+  _initTranslateDependencies();
 }
 
 Future<void> _initFetchLanguagesDependencies(GetIt locator) async {
@@ -54,11 +59,20 @@ Future<void> _initFetchLanguagesDependencies(GetIt locator) async {
       () => GetLangFromCodeUseCase(languagesRepo: locator()));
 }
 
-void _initDetectLanguagesDependencies(GetIt locator) {
+void _initDetectLanguagesDependencies() {
   locator.registerLazySingleton<DetectLangRemoteDataSource>(
       () => DetectLangRemoteDataSourceImpl(dio: locator()));
   locator.registerLazySingleton<DetectLangRepo>(
       () => DetectLangRepoImpl(detectLangRemoteDataSource: locator()));
   locator.registerLazySingleton<DetectLangUseCase>(
       () => DetectLangUseCase(detectLangRepo: locator()));
+}
+
+void _initTranslateDependencies() {
+  locator.registerLazySingleton<RemoteTranslateDS>(
+      () => RemoteTranslateDSImpl(dio: locator()));
+  locator.registerLazySingleton<TranslateRepo>(
+      () => TranslateRepoImpl(remoteTranslateDS: locator()));
+  locator.registerLazySingleton<TranslateUseCase>(
+      () => TranslateUseCase(translateRepo: locator()));
 }

@@ -8,7 +8,7 @@ import 'data_source/remote_translate_ds.dart';
 class TranslateRepoImpl implements TranslateRepo {
   final RemoteTranslateDS remoteTranslateDS;
 
-  TranslateRepoImpl(this.remoteTranslateDS);
+  TranslateRepoImpl({required this.remoteTranslateDS});
 
   @override
   Future<Either<Failure, List<Translation>>> translate(

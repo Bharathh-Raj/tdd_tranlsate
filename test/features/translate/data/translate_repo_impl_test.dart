@@ -18,7 +18,7 @@ void main() {
 
   setUp(() {
     mockRemoteTranslateDS = MockRemoteTranslateDS();
-    translateRepo = TranslateRepoImpl(mockRemoteTranslateDS);
+    translateRepo = TranslateRepoImpl(remoteTranslateDS: mockRemoteTranslateDS);
   });
 
   group("translate() method", () {
