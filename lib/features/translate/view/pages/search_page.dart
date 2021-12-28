@@ -27,7 +27,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Translate'),
+        title: const Text('TDD Translate'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
