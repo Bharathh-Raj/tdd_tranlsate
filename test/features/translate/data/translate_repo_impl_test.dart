@@ -24,55 +24,63 @@ void main() {
   group("translate() method", () {
     group("Basic cases", () {
       void setUpSuccessFetch() {
-        when(mockRemoteTranslateDS.translate(inputText: "test", destLangCode: "en"))
-            .thenAnswer((_) async => [TranslationModel(translatedText: "test")]);
+        when(mockRemoteTranslateDS.translate(
+                inputText: "test", destLangCode: "en"))
+            .thenAnswer(
+                (_) async => [TranslationModel(translatedText: "test")]);
       }
 
       test("RemoteTranslateDS translate() method must be called", () async {
         setUpSuccessFetch();
         await translateRepo.translate(inputText: "test", destLangCode: "en");
-        verify(mockRemoteTranslateDS.translate(inputText: "test", destLangCode: "en"));
+        verify(mockRemoteTranslateDS.translate(
+            inputText: "test", destLangCode: "en"));
       });
     });
 
     group("Success cases", () {
       void setUpSuccessFetch() {
-        when(mockRemoteTranslateDS.translate(inputText: "test", destLangCode: "en"))
-            .thenAnswer((_) async => [TranslationModel(translatedText: "test")]);
+        when(mockRemoteTranslateDS.translate(
+                inputText: "test", destLangCode: "en"))
+            .thenAnswer(
+                (_) async => [TranslationModel(translatedText: "test")]);
       }
 
       test("isRight should be true for successful translate", () async {
         setUpSuccessFetch();
-        Either<Failure, List<Translation>> result =
-            await translateRepo.translate(inputText: "test", destLangCode: "en");
+        Either<Failure, List<Translation>> result = await translateRepo
+            .translate(inputText: "test", destLangCode: "en");
         expect(result.isRight(), isTrue);
       });
 
-      test("isRight should be of type Translation on success translate", () async {
+      test("isRight should be of type Translation on success translate",
+          () async {
         setUpSuccessFetch();
-        Either<Failure, List<Translation>> result =
-            await translateRepo.translate(inputText: "test", destLangCode: "en");
+        Either<Failure, List<Translation>> result = await translateRepo
+            .translate(inputText: "test", destLangCode: "en");
         expect(result, isInstanceOf<Right<Failure, List<Translation>>>());
       });
     });
 
     group("Failure cases", () {
       void setUpFailureFetch() {
-        when(mockRemoteTranslateDS.translate(inputText: "test", destLangCode: "en"))
+        when(mockRemoteTranslateDS.translate(
+                inputText: "test", destLangCode: "en"))
             .thenThrow(Exception());
       }
 
       test("isLeft should be true for failure translate", () async {
         setUpFailureFetch();
-        Either<Failure, List<Translation>> result =
-            await translateRepo.translate(inputText: "test", destLangCode: "en");
+        Either<Failure, List<Translation>> result = await translateRepo
+            .translate(inputText: "test", destLangCode: "en");
         expect(result.isLeft(), isTrue);
       });
 
-      test("isLeft should be of type Translation on failure translate", () async {
+      test("isLeft should be of type Translation on failure translate",
+          () async {
         setUpFailureFetch();
-        Either<Failure, List<Translation>> result =
-            await translateRepo.translate(inputText: "test", destLangCode: "en");
+        Either<Failure, List<Translation>> result = await translateRepo
+            .translate(inputText: "test", destLangCode: "en");
         expect(result, isInstanceOf<Left<Failure, List<Translation>>>());
       });
     });

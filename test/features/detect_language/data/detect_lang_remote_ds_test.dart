@@ -22,7 +22,8 @@ void main() {
     detectionsFixtureMap = fixtureAsMap('detections.json');
     response = Response(
         requestOptions: RequestOptions(
-            path: detectLangRemoteDataSource.endPoint, queryParameters: {"q": "test"}),
+            path: detectLangRemoteDataSource.endPoint,
+            queryParameters: {"q": "test"}),
         data: detectionsFixtureMap);
   });
 
@@ -37,13 +38,14 @@ void main() {
       test("dio.get() method must be called", () async {
         setUpDetectSuccess();
         await detectLangRemoteDataSource.detectLangFor("test");
-        verify(mockDio
-            .get(detectLangRemoteDataSource.endPoint, queryParameters: {"q": "test"}));
+        verify(mockDio.get(detectLangRemoteDataSource.endPoint,
+            queryParameters: {"q": "test"}));
       });
 
       test("Should return List<DetectionModel> on success", () async {
         setUpDetectSuccess();
-        final detectionModelList = await detectLangRemoteDataSource.detectLangFor("test");
+        final detectionModelList =
+            await detectLangRemoteDataSource.detectLangFor("test");
         expect(detectionModelList, isInstanceOf<List<DetectionModel>>());
       });
     });
@@ -53,7 +55,8 @@ void main() {
         when(mockDio.get(detectLangRemoteDataSource.endPoint,
                 queryParameters: anyNamed("queryParameters")))
             .thenThrow(DioError(
-                requestOptions: RequestOptions(path: detectLangRemoteDataSource.endPoint),
+                requestOptions:
+                    RequestOptions(path: detectLangRemoteDataSource.endPoint),
                 error: "Test Error",
                 type: DioErrorType.other));
       }

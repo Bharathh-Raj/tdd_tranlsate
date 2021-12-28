@@ -32,17 +32,19 @@ void main() {
 
   group("translate event", () {
     setUp(() {
-      when(mockGetLangFromCodeUseCase("ta"))
-          .thenAnswer((_) async => const LanguageModel(language: 'ta', name: "Tamil"));
-      when(mockGetLangFromCodeUseCase("en"))
-          .thenAnswer((_) async => const LanguageModel(language: 'en', name: "English"));
+      when(mockGetLangFromCodeUseCase("ta")).thenAnswer(
+          (_) async => const LanguageModel(language: 'ta', name: "Tamil"));
+      when(mockGetLangFromCodeUseCase("en")).thenAnswer(
+          (_) async => const LanguageModel(language: 'en', name: "English"));
     });
     group("Basis tests", () {
       void setUpTranslateSuccess() {
         when(mockTranslateUseCase(
                 TranslationParam(inputText: "test", destLangCode: "ta")))
-            .thenAnswer((_) async =>
-                Right([TranslationModel(translatedText: "சோதனை", sourceLangCode: "en")]));
+            .thenAnswer((_) async => Right([
+                  TranslationModel(
+                      translatedText: "சோதனை", sourceLangCode: "en")
+                ]));
       }
 
       test("Initial state should be TranslateState.initial", () {
@@ -53,8 +55,8 @@ void main() {
         "useCase must be called on translate event",
         build: () => translateBloc,
         setUp: setUpTranslateSuccess,
-        act: (bloc) => bloc
-            .add(const TranslateEvent.translate(inputText: "test", destLangCode: "ta")),
+        act: (bloc) => bloc.add(const TranslateEvent.translate(
+            inputText: "test", destLangCode: "ta")),
         verify: (bloc) => verify(mockTranslateUseCase(
                 TranslationParam(inputText: "test", destLangCode: "ta")))
             .called(1),
@@ -65,16 +67,18 @@ void main() {
       void setUpTranslateWithAutoSourceSuccess() {
         when(mockTranslateUseCase(
                 TranslationParam(inputText: "test", destLangCode: "ta")))
-            .thenAnswer((_) async =>
-                Right([TranslationModel(translatedText: "சோதனை", sourceLangCode: "en")]));
+            .thenAnswer((_) async => Right([
+                  TranslationModel(
+                      translatedText: "சோதனை", sourceLangCode: "en")
+                ]));
       }
 
       blocTest<TranslateBloc, TranslateState>(
         "getLangFromCodeUseCase must be called on translate success",
         build: () => translateBloc,
         setUp: setUpTranslateWithAutoSourceSuccess,
-        act: (bloc) => bloc
-            .add(const TranslateEvent.translate(inputText: "test", destLangCode: "ta")),
+        act: (bloc) => bloc.add(const TranslateEvent.translate(
+            inputText: "test", destLangCode: "ta")),
         verify: (bloc) => verify(mockGetLangFromCodeUseCase("en")),
       );
 
@@ -82,8 +86,8 @@ void main() {
           "Must yield LoadingState and TranslatedState on translate success",
           build: () => translateBloc,
           setUp: setUpTranslateWithAutoSourceSuccess,
-          act: (bloc) => bloc
-              .add(const TranslateEvent.translate(inputText: "test", destLangCode: "ta")),
+          act: (bloc) => bloc.add(const TranslateEvent.translate(
+              inputText: "test", destLangCode: "ta")),
           expect: () => <TranslateState>[
                 const TranslateState.loading(),
                 TranslateState.translated(translationWrapperList: [
@@ -91,8 +95,10 @@ void main() {
                       inputText: 'test',
                       destLangCode: "ta",
                       sourceLangCode: "en",
-                      destLang: const LanguageModel(language: "ta", name: "Tamil"),
-                      sourceLang: const LanguageModel(language: "en", name: "English"),
+                      destLang:
+                          const LanguageModel(language: "ta", name: "Tamil"),
+                      sourceLang:
+                          const LanguageModel(language: "en", name: "English"),
                       translation: TranslationModel(
                           translatedText: "சோதனை", sourceLangCode: "en")),
                 ])

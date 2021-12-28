@@ -3,7 +3,10 @@ abstract class Detection {
   final bool isReliable;
   final double accuracy;
 
-  Detection({required this.langCode, required this.isReliable, required this.accuracy});
+  Detection(
+      {required this.langCode,
+      required this.isReliable,
+      required this.accuracy});
 
   @override
   String toString() {
@@ -20,5 +23,6 @@ abstract class Detection {
           accuracy == other.accuracy;
 
   @override
-  int get hashCode => langCode.hashCode ^ isReliable.hashCode ^ accuracy.hashCode;
+  int get hashCode =>
+      langCode.hashCode ^ isReliable.hashCode ^ accuracy.hashCode;
 }

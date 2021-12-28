@@ -24,7 +24,8 @@ class LanguagesBloc extends Bloc<LanguagesEvent, LanguagesState> {
           await _mapFetchEventToState(emit);
         },
         putSelectedLang: (putSelectedLangEvent) async {
-          await _mapPutSelectedLangEventToState(putSelectedLangEvent.selectedLang, emit);
+          await _mapPutSelectedLangEventToState(
+              putSelectedLangEvent.selectedLang, emit);
         },
       );
     });
@@ -33,12 +34,14 @@ class LanguagesBloc extends Bloc<LanguagesEvent, LanguagesState> {
   Future<void> _mapFetchEventToState(Emitter emit) async {
     final Either<Failure, List<Language>> fetchResult =
         await fetchLanguagesUseCase(const NoParam());
-    final String selectedLang = await getSelectedLangCodeUseCase(const NoParam());
+    final String selectedLang =
+        await getSelectedLangCodeUseCase(const NoParam());
     emit(fetchResult.fold((failure) => LanguagesState.failure(failure),
         (languageList) => LanguagesState.fetched(languageList, selectedLang)));
   }
 
-  Future<void> _mapPutSelectedLangEventToState(String selectedLang, Emitter emit) async {
+  Future<void> _mapPutSelectedLangEventToState(
+      String selectedLang, Emitter emit) async {
     final Either<Failure, void> fetchResult =
         await putSelectedLangCodeUseCase(selectedLang);
 

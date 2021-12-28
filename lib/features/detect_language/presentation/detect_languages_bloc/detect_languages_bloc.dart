@@ -11,7 +11,8 @@ import 'package:tdd_translate/features/supported_languages/domain/use_cases/get_
 
 import 'bloc.dart';
 
-class DetectLanguagesBloc extends Bloc<DetectLanguagesEvent, DetectLanguagesState> {
+class DetectLanguagesBloc
+    extends Bloc<DetectLanguagesEvent, DetectLanguagesState> {
   final DetectLangUseCase detectLangUseCase;
   final GetLangFromCodeUseCase getLangFromCodeUseCase;
 
@@ -29,8 +30,10 @@ class DetectLanguagesBloc extends Bloc<DetectLanguagesEvent, DetectLanguagesStat
   }
 
   Future<void> mapDetectEventToState(String inputText, Emitter emit) async {
-    Either<Failure, List<Detection>> detectionList = await detectLangUseCase(inputText);
-    emit(await detectionList.fold((l) => DetectLanguagesState.failed(l), (r) async {
+    Either<Failure, List<Detection>> detectionList =
+        await detectLangUseCase(inputText);
+    emit(await detectionList.fold((l) => DetectLanguagesState.failed(l),
+        (r) async {
       final List<LangDetection> langDetectionList = [];
       for (Detection det in r) {
         final Language? lang = await getLangFromCodeUseCase(det.langCode);

@@ -10,8 +10,8 @@ import '../fixtures/fixture_reader.dart';
 
 List<LanguageModel> fetchTestLanguageList() {
   final List<dynamic> fixtureRawLanguageList =
-      ((json.decode(fixture('supported_languages.json')) as Map<String, dynamic>)["data"]
-              ["languages"] as List<dynamic>)
+      ((json.decode(fixture('supported_languages.json'))
+              as Map<String, dynamic>)["data"]["languages"] as List<dynamic>)
           .map((language) => language as Map<String, dynamic>)
           .toList();
   final List<LanguageModel> fixtureLanguageModelList = fixtureRawLanguageList

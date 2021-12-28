@@ -2,7 +2,9 @@ import 'package:tdd_translate/features/detect_language/domain/entities/detection
 
 class DetectionModel extends Detection {
   DetectionModel(
-      {required String language, required double confidence, required bool isReliable})
+      {required String language,
+      required double confidence,
+      required bool isReliable})
       : super(langCode: language, accuracy: confidence, isReliable: isReliable);
 
   factory DetectionModel.fromJson(Map<String, dynamic> json) => DetectionModel(

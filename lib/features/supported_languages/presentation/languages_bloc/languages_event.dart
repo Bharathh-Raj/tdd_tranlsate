@@ -7,5 +7,6 @@ part 'languages_event.freezed.dart';
 class LanguagesEvent with _$LanguagesEvent {
   const factory LanguagesEvent.fetch() = _fetch;
 
-  const factory LanguagesEvent.putSelectedLang(String selectedLang) = _putSelectedLang;
+  const factory LanguagesEvent.putSelectedLang(String selectedLang) =
+      _putSelectedLang;
 }

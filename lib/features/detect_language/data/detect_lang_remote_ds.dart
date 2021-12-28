@@ -14,13 +14,15 @@ class DetectLangRemoteDataSourceImpl implements DetectLangRemoteDataSource {
 
   @override
   Future<List<DetectionModel>> detectLangFor(String text) async {
-    Response<dynamic> response = await dio.get(endPoint, queryParameters: {"q": text});
+    Response<dynamic> response =
+        await dio.get(endPoint, queryParameters: {"q": text});
     return _parse(response);
   }
 
   List<DetectionModel> _parse(Response response) {
     Map<String, dynamic> responseData = response.data as Map<String, dynamic>;
-    List<dynamic> rawDetections = responseData["data"]["detections"] as List<dynamic>;
+    List<dynamic> rawDetections =
+        responseData["data"]["detections"] as List<dynamic>;
 
     final List<DetectionModel> detectionModelList = [];
 

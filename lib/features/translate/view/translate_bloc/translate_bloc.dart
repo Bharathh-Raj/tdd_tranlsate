@@ -15,7 +15,8 @@ class TranslateBloc extends Bloc<TranslateEvent, TranslateState> {
   final TranslateUseCase translateUseCase;
   final GetLangFromCodeUseCase getLangFromCodeUseCase;
 
-  TranslateBloc({required this.translateUseCase, required this.getLangFromCodeUseCase})
+  TranslateBloc(
+      {required this.translateUseCase, required this.getLangFromCodeUseCase})
       : super(const TranslateState.initial()) {
     on<TranslateEvent>((event, emit) async {
       await event.map(
@@ -27,14 +28,16 @@ class TranslateBloc extends Bloc<TranslateEvent, TranslateState> {
     });
   }
 
-  Future<void> _mapTranslateEventToState(event, Emitter<TranslateState> emit) async {
-    final Either<Failure, List<Translation>> translateResult = await translateUseCase(
-        TranslationParam(
+  Future<void> _mapTranslateEventToState(
+      event, Emitter<TranslateState> emit) async {
+    final Either<Failure, List<Translation>> translateResult =
+        await translateUseCase(TranslationParam(
             inputText: event.inputText,
             destLangCode: event.destLangCode,
             sourceLangCode: event.sourceLangCode));
 
-    emit(await translateResult.fold((l) => TranslateState.failure(l), (r) async {
+    emit(
+        await translateResult.fold((l) => TranslateState.failure(l), (r) async {
       final List<TranslationWrapper> translationWrapperList = [];
       for (Translation translation in r) {
         translationWrapperList.add(await getTranslationWrapper(
@@ -43,7 +46,8 @@ class TranslateBloc extends Bloc<TranslateEvent, TranslateState> {
             destLangCode: event.destLangCode,
             inpLangCode: event.sourceLangCode));
       }
-      return TranslateState.translated(translationWrapperList: translationWrapperList);
+      return TranslateState.translated(
+          translationWrapperList: translationWrapperList);
     }));
   }
 

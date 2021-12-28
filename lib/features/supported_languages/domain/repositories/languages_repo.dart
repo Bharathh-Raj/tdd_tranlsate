@@ -7,7 +7,8 @@ abstract class LanguagesRepo {
 
   String getSelectedLanguageCode();
 
-  Future<Either<Failure, void>> putSelectedLanguageCode({required String langCode});
+  Future<Either<Failure, void>> putSelectedLanguageCode(
+      {required String langCode});
 
   Language? getLangFromCode({required String langCode});
 

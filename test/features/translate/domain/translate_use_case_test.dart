@@ -24,14 +24,15 @@ void main() {
     void setUpTranslateSuccess() {
       when(mockTranslateRepo.translate(
               inputText: "test", destLangCode: "ta", sourceLangCode: null))
-          .thenAnswer((_) async =>
-              Right([TranslationModel(translatedText: "சோதனை", sourceLangCode: "en")]));
+          .thenAnswer((_) async => Right([
+                TranslationModel(translatedText: "சோதனை", sourceLangCode: "en")
+              ]));
     }
 
     test("Should call translate() method from repo", () async {
       setUpTranslateSuccess();
-      await translateUseCase(
-          TranslationParam(inputText: "test", destLangCode: "ta", sourceLangCode: null));
+      await translateUseCase(TranslationParam(
+          inputText: "test", destLangCode: "ta", sourceLangCode: null));
       verify(mockTranslateRepo.translate(
           inputText: "test", destLangCode: "ta", sourceLangCode: null));
     });
@@ -39,14 +40,16 @@ void main() {
     test("isRight should be true on translate success", () async {
       setUpTranslateSuccess();
       final Either<Failure, List<Translation>> result = await translateUseCase(
-          TranslationParam(inputText: "test", destLangCode: "ta", sourceLangCode: null));
+          TranslationParam(
+              inputText: "test", destLangCode: "ta", sourceLangCode: null));
       expect(result.isRight(), isTrue);
     });
 
     test("Should be of type Translation on translate success", () async {
       setUpTranslateSuccess();
       final Either<Failure, List<Translation>> result = await translateUseCase(
-          TranslationParam(inputText: "test", destLangCode: "ta", sourceLangCode: null));
+          TranslationParam(
+              inputText: "test", destLangCode: "ta", sourceLangCode: null));
       expect(result, isInstanceOf<Right<Failure, List<Translation>>>());
     });
   });
@@ -61,14 +64,16 @@ void main() {
     test("isLeft should be true on translate failure", () async {
       setUpTranslateFailure();
       final Either<Failure, List<Translation>> result = await translateUseCase(
-          TranslationParam(inputText: "test", destLangCode: "ta", sourceLangCode: null));
+          TranslationParam(
+              inputText: "test", destLangCode: "ta", sourceLangCode: null));
       expect(result.isLeft(), isTrue);
     });
 
     test("Should be of type Failure on translate failure", () async {
       setUpTranslateFailure();
       final Either<Failure, List<Translation>> result = await translateUseCase(
-          TranslationParam(inputText: "test", destLangCode: "ta", sourceLangCode: null));
+          TranslationParam(
+              inputText: "test", destLangCode: "ta", sourceLangCode: null));
       expect(result, isInstanceOf<Left<Failure, List<Translation>>>());
     });
   });

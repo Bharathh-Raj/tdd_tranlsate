@@ -22,8 +22,8 @@ void main() {
 
   group("Success Cases", () {
     setUpDetectSuccess() {
-      when(mockDetectLangRepo.detectLang("test")).thenAnswer((_) async =>
-          Right([DetectionModel(isReliable: true, confidence: 1, language: "en")]));
+      when(mockDetectLangRepo.detectLang("test")).thenAnswer((_) async => Right(
+          [DetectionModel(isReliable: true, confidence: 1, language: "en")]));
     }
 
     test("detectLang method from langRepo must be called", () async {

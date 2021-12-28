@@ -43,8 +43,8 @@ Future<void> _initFetchLanguagesDependencies(GetIt locator) async {
   locator.registerLazySingleton<LanguagesLocalDataSource>(
       () => LanguagesLocalDataSourceImpl(hiveBox: hiveBox));
 
-  locator.registerLazySingleton<LanguagesRepo>(
-      () => LanguagesRepoImpl(remoteDataSource: locator(), localDataSource: locator()));
+  locator.registerLazySingleton<LanguagesRepo>(() => LanguagesRepoImpl(
+      remoteDataSource: locator(), localDataSource: locator()));
 
   locator.registerLazySingleton<FetchLanguagesUseCase>(
       () => FetchLanguagesUseCase(languagesRepo: locator()));

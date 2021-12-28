@@ -37,13 +37,13 @@ void main() {
     });
 
     void setUpDetectSuccess() {
-      when(mockDetectLangUseCase("test")).thenAnswer((_) async =>
-          Right([DetectionModel(isReliable: true, confidence: 1, language: "en")]));
+      when(mockDetectLangUseCase("test")).thenAnswer((_) async => Right(
+          [DetectionModel(isReliable: true, confidence: 1, language: "en")]));
     }
 
     void setUpGetLangFromCodeSuccess() {
-      when(mockGetLangFromCodeUseCase("en"))
-          .thenAnswer((_) async => const LanguageModel(language: "en", name: "English"));
+      when(mockGetLangFromCodeUseCase("en")).thenAnswer(
+          (_) async => const LanguageModel(language: "en", name: "English"));
     }
 
     blocTest<DetectLanguagesBloc, DetectLanguagesState>(
@@ -53,7 +53,8 @@ void main() {
         setUpDetectSuccess();
         setUpGetLangFromCodeSuccess();
       },
-      act: (bloc) => bloc.add(const DetectLanguagesEvent.detect(inputText: "test")),
+      act: (bloc) =>
+          bloc.add(const DetectLanguagesEvent.detect(inputText: "test")),
       verify: (bloc) => verify(mockDetectLangUseCase("test")),
     );
 
@@ -64,7 +65,8 @@ void main() {
         setUpDetectSuccess();
         setUpGetLangFromCodeSuccess();
       },
-      act: (bloc) => bloc.add(const DetectLanguagesEvent.detect(inputText: "test")),
+      act: (bloc) =>
+          bloc.add(const DetectLanguagesEvent.detect(inputText: "test")),
       verify: (bloc) => verify(mockGetLangFromCodeUseCase("en")),
     );
 
@@ -75,12 +77,14 @@ void main() {
         setUpDetectSuccess();
         setUpGetLangFromCodeSuccess();
       },
-      act: (bloc) => bloc.add(const DetectLanguagesEvent.detect(inputText: "test")),
+      act: (bloc) =>
+          bloc.add(const DetectLanguagesEvent.detect(inputText: "test")),
       expect: () => <DetectLanguagesState>[
         const DetectLanguagesState.loading(),
         DetectLanguagesState.detected(inputText: "test", detectionList: [
           LangDetection(
-              detection: DetectionModel(isReliable: true, confidence: 1, language: "en"),
+              detection: DetectionModel(
+                  isReliable: true, confidence: 1, language: "en"),
               language: const LanguageModel(name: "English", language: "en"))
         ])
       ],
@@ -97,12 +101,14 @@ void main() {
         setUpDetectSuccess();
         setUpGetLangFromCodeNull();
       },
-      act: (bloc) => bloc.add(const DetectLanguagesEvent.detect(inputText: "test")),
+      act: (bloc) =>
+          bloc.add(const DetectLanguagesEvent.detect(inputText: "test")),
       expect: () => <DetectLanguagesState>[
         const DetectLanguagesState.loading(),
         DetectLanguagesState.detected(inputText: "test", detectionList: [
           LangDetection(
-              detection: DetectionModel(isReliable: true, confidence: 1, language: "en"),
+              detection: DetectionModel(
+                  isReliable: true, confidence: 1, language: "en"),
               language: null)
         ])
       ],
@@ -110,14 +116,16 @@ void main() {
 
     group("Failure cases", () {
       void setUpDetectFailure() {
-        when(mockDetectLangUseCase("test")).thenAnswer((_) async => Left(FetchFailure()));
+        when(mockDetectLangUseCase("test"))
+            .thenAnswer((_) async => Left(FetchFailure()));
       }
 
       blocTest<DetectLanguagesBloc, DetectLanguagesState>(
         "Loading state and Failure state must be emitted on detection failure",
         build: () => detectLanguagesBloc,
         setUp: setUpDetectFailure,
-        act: (bloc) => bloc.add(const DetectLanguagesEvent.detect(inputText: "test")),
+        act: (bloc) =>
+            bloc.add(const DetectLanguagesEvent.detect(inputText: "test")),
         expect: () => <DetectLanguagesState>[
           const DetectLanguagesState.loading(),
           DetectLanguagesState.failed(FetchFailure())

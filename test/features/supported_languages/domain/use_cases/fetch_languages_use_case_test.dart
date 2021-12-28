@@ -18,7 +18,8 @@ void main() {
 
   setUp(() {
     mockLanguagesRepo = MockLanguagesRepo();
-    fetchLanguagesUseCase = FetchLanguagesUseCase(languagesRepo: mockLanguagesRepo);
+    fetchLanguagesUseCase =
+        FetchLanguagesUseCase(languagesRepo: mockLanguagesRepo);
   });
 
   void setupFetchSuccess() {
@@ -33,7 +34,8 @@ void main() {
       verify(mockLanguagesRepo.fetch());
     });
 
-    test("should be of type Either<Failure, List<Language>> on success", () async {
+    test("should be of type Either<Failure, List<Language>> on success",
+        () async {
       setupFetchSuccess();
       final langList = await fetchLanguagesUseCase(const NoParam());
       expect(langList, isInstanceOf<Either<Failure, List<Language>>>());
@@ -48,7 +50,8 @@ void main() {
   });
 
   void setupFetchFailure() {
-    when(mockLanguagesRepo.fetch()).thenAnswer((_) async => Left(FetchFailure()));
+    when(mockLanguagesRepo.fetch())
+        .thenAnswer((_) async => Left(FetchFailure()));
   }
 
   group("Fetch Failure", () {

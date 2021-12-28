@@ -44,7 +44,8 @@ void main() {
       final languageList = await dataSource.fetch();
       expect(languageList, isInstanceOf<List<LanguageModel>>());
     });
-    test("Language list returned from fetching should be same as fixture's language list",
+    test(
+        "Language list returned from fetching should be same as fixture's language list",
         () async {
       setUpMockDioSuccess();
       final fetchedLanguageList = await dataSource.fetch();
@@ -53,9 +54,10 @@ void main() {
               .map((language) => language as Map<String, dynamic>)
               .toList();
 
-      final List<LanguageModel> fixtureLanguageModelList = fixtureRawLanguageList
-          .map((languageMap) => LanguageModel.fromJson(languageMap))
-          .toList();
+      final List<LanguageModel> fixtureLanguageModelList =
+          fixtureRawLanguageList
+              .map((languageMap) => LanguageModel.fromJson(languageMap))
+              .toList();
       expect(fixtureLanguageModelList, equals(fetchedLanguageList));
     });
   });
@@ -72,8 +74,8 @@ void main() {
   group("Fetch Supported Languages - Failure cases", () {
     test("Should throw exception", () {
       setUpMockDioFailure();
-      expect(
-          () async => await dataSource.fetch(), throwsA(const TypeMatcher<DioError>()));
+      expect(() async => await dataSource.fetch(),
+          throwsA(const TypeMatcher<DioError>()));
     });
   });
 }

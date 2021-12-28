@@ -17,10 +17,13 @@ class LanguagesRemoteDataSourceImpl implements LanguagesRemoteDataSource {
     Response<dynamic> response =
         await dio.get(languagesEndpoint, queryParameters: queryParam);
     Map<String, dynamic> responseData = response.data as Map<String, dynamic>;
-    List<dynamic> rawLanguages = responseData["data"]["languages"] as List<dynamic>;
+    List<dynamic> rawLanguages =
+        responseData["data"]["languages"] as List<dynamic>;
     for (var language in rawLanguages) {
       language as Map<String, dynamic>;
     }
-    return rawLanguages.map((language) => LanguageModel.fromJson(language)).toList();
+    return rawLanguages
+        .map((language) => LanguageModel.fromJson(language))
+        .toList();
   }
 }

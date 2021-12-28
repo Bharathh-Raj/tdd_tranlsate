@@ -12,7 +12,8 @@ class TranslateUseCase
   TranslateUseCase({required this.translateRepo});
 
   @override
-  Future<Either<Failure, List<Translation>>> call(TranslationParam param) async {
+  Future<Either<Failure, List<Translation>>> call(
+      TranslationParam param) async {
     return await translateRepo.translate(
       inputText: param.inputText,
       destLangCode: param.destLangCode,
@@ -27,7 +28,9 @@ class TranslationParam {
   final String? sourceLangCode;
 
   TranslationParam(
-      {required this.inputText, required this.destLangCode, this.sourceLangCode});
+      {required this.inputText,
+      required this.destLangCode,
+      this.sourceLangCode});
 
   @override
   bool operator ==(Object other) =>

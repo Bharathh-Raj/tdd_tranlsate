@@ -18,15 +18,18 @@ void main() {
 
   setUp(() {
     mockDetectLangRemoteDataSource = MockDetectLangRemoteDataSource();
-    detectLangRepo =
-        DetectLangRepoImpl(detectLangRemoteDataSource: mockDetectLangRemoteDataSource);
+    detectLangRepo = DetectLangRepoImpl(
+        detectLangRemoteDataSource: mockDetectLangRemoteDataSource);
   });
 
   group("detectLang method test", () {
     group("Success Cases", () {
       void setUpLangDetectSuccess() {
-        when(mockDetectLangRemoteDataSource.detectLangFor("test")).thenAnswer((_) async =>
-            [DetectionModel(language: "en", confidence: 0.5, isReliable: false)]);
+        when(mockDetectLangRemoteDataSource.detectLangFor("test")).thenAnswer(
+            (_) async => [
+                  DetectionModel(
+                      language: "en", confidence: 0.5, isReliable: false)
+                ]);
       }
 
       test("detectLangFor method of data source should be called", () async {
@@ -42,7 +45,8 @@ void main() {
         expect(result.isRight(), isTrue);
       });
 
-      test("Right should be of type List<Detection> on detection success", () async {
+      test("Right should be of type List<Detection> on detection success",
+          () async {
         setUpLangDetectSuccess();
         final Either<Failure, List<Detection>> result =
             await detectLangRepo.detectLang("test");
@@ -52,7 +56,8 @@ void main() {
 
     group("Failure cases", () {
       void setUpLangDetectFailure() {
-        when(mockDetectLangRemoteDataSource.detectLangFor("test")).thenThrow(Exception());
+        when(mockDetectLangRemoteDataSource.detectLangFor("test"))
+            .thenThrow(Exception());
       }
 
       test("isLeft should be true on detection failure", () async {

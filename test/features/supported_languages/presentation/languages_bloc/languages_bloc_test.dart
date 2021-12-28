@@ -13,8 +13,11 @@ import 'package:tdd_translate/features/supported_languages/presentation/language
 import '../../../../helpers/test_helpers.dart';
 import 'languages_bloc_test.mocks.dart';
 
-@GenerateMocks(
-    [FetchLanguagesUseCase, GetSelectedLangCodeUseCase, PutSelectedLangCodeUseCase])
+@GenerateMocks([
+  FetchLanguagesUseCase,
+  GetSelectedLangCodeUseCase,
+  PutSelectedLangCodeUseCase
+])
 void main() {
   late MockFetchLanguagesUseCase mockFetchLanguagesUseCase;
   late MockGetSelectedLangCodeUseCase mockGetSelectedLangCodeUseCase;
@@ -39,7 +42,8 @@ void main() {
   }
 
   void setUpSelectedLang() {
-    when(mockGetSelectedLangCodeUseCase(const NoParam())).thenAnswer((_) async => "en");
+    when(mockGetSelectedLangCodeUseCase(const NoParam()))
+        .thenAnswer((_) async => "en");
   }
 
   void setupFetchFailure() {
@@ -76,8 +80,9 @@ void main() {
         setUpSelectedLang();
         bloc.add(const LanguagesEvent.fetch());
       },
-      expect: () =>
-          <LanguagesState>[LanguagesState.fetched(fetchTestLanguageList(), "en")],
+      expect: () => <LanguagesState>[
+        LanguagesState.fetched(fetchTestLanguageList(), "en")
+      ],
     );
 
     blocTest<LanguagesBloc, LanguagesState>(
@@ -98,7 +103,8 @@ void main() {
           .thenAnswer((_) async => const Right(Unit));
     }
 
-    test("On PutSelectedLangEvent, putSelectedLangUseCase must be called", () async {
+    test("On PutSelectedLangEvent, putSelectedLangUseCase must be called",
+        () async {
       setUpPutSelectedLangSuccess();
       languagesBloc.add(const LanguagesEvent.putSelectedLang("en"));
       await untilCalled(mockPutSelectedLangCodeUseCase("en"));

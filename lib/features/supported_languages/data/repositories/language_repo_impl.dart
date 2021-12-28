@@ -12,7 +12,8 @@ class LanguagesRepoImpl implements LanguagesRepo {
   final LanguagesRemoteDataSource remoteDataSource;
   final LanguagesLocalDataSource localDataSource;
 
-  LanguagesRepoImpl({required this.remoteDataSource, required this.localDataSource});
+  LanguagesRepoImpl(
+      {required this.remoteDataSource, required this.localDataSource});
 
   @override
   String get defaultLangCode => "en";

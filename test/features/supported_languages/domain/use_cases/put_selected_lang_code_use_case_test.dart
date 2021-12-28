@@ -33,13 +33,15 @@ void main() {
 
     test("isRight should be true on put success", () async {
       setUpPutSuccess();
-      Either<Failure, void> selectedLang = await putSelectedLangCodeUseCase("en");
+      Either<Failure, void> selectedLang =
+          await putSelectedLangCodeUseCase("en");
       expect(selectedLang.isRight(), isTrue);
     });
 
     test("isRight(Unit) should be returned on put success", () async {
       setUpPutSuccess();
-      Either<Failure, void> selectedLang = await putSelectedLangCodeUseCase("en");
+      Either<Failure, void> selectedLang =
+          await putSelectedLangCodeUseCase("en");
       expect(selectedLang, const Right(Unit));
     });
   });
@@ -51,7 +53,8 @@ void main() {
 
     test("isLeft should be returned on failure case", () async {
       setUpFetchFailure();
-      Either<Failure, void> selectedLang = await putSelectedLangCodeUseCase("en");
+      Either<Failure, void> selectedLang =
+          await putSelectedLangCodeUseCase("en");
       expect(selectedLang.isLeft(), isTrue);
     });
   });

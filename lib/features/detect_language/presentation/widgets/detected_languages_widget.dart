@@ -18,13 +18,15 @@ class DetectedLanguagesWidget extends StatelessWidget {
               child: ListView.builder(
                 itemCount: value.detectionList.length,
                 itemBuilder: (context, index) {
-                  final LangDetection langDetection = value.detectionList[index];
+                  final LangDetection langDetection =
+                      value.detectionList[index];
                   return Card(
                       child: ListTile(
-                    title: Text(
-                        langDetection.language?.name ?? langDetection.detection.langCode),
+                    title: Text(langDetection.language?.name ??
+                        langDetection.detection.langCode),
                     subtitle: Text(langDetection.detection.accuracy.toString()),
-                    trailing: Text(langDetection.detection.isReliable.toString()),
+                    trailing:
+                        Text(langDetection.detection.isReliable.toString()),
                   ));
                 },
               ),

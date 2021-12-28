@@ -37,14 +37,16 @@ void main() {
       await languagesRepo.fetch();
       verify(remoteDataSource.fetch());
     });
-    test("Should return value with type Either<Failure, List<Language>>", () async {
+    test("Should return value with type Either<Failure, List<Language>>",
+        () async {
       setUpRemoteFetchSuccess();
       final langList = await languagesRepo.fetch();
       expect(langList, isInstanceOf<Either<Failure, List<Language>>>());
     });
     test("isRight should be true when success", () async {
       setUpRemoteFetchSuccess();
-      final Either<Failure, List<Language>> langList = await languagesRepo.fetch();
+      final Either<Failure, List<Language>> langList =
+          await languagesRepo.fetch();
       expect(langList.isRight(), isTrue);
     });
 
@@ -60,7 +62,8 @@ void main() {
       test("Should call localWrite on remote fetch success", () async {
         setUpRemoteFetchSuccess();
         setUpLocalWriteSuccess();
-        final Either<Failure, List<Language>> langList = await languagesRepo.fetch();
+        final Either<Failure, List<Language>> langList =
+            await languagesRepo.fetch();
         langList.fold((l) => expect(langList.isLeft(), isFalse),
             (r) => verify(localDataSource.write(r as List<LanguageModel>)));
       });
@@ -68,17 +71,20 @@ void main() {
       test("Should not return anything on localWrite succeeds", () async {
         setUpRemoteFetchSuccess();
         setUpLocalWriteSuccess();
-        final Either<Failure, List<Language>> langList = await languagesRepo.fetch();
+        final Either<Failure, List<Language>> langList =
+            await languagesRepo.fetch();
         langList.fold(
             (l) => expect(langList.isLeft(), isFalse),
             (r) => expect(localDataSource.write(r as List<LanguageModel>),
                 isInstanceOf<Future<void>>()));
       });
 
-      test("LocalWrite failure should not affect the language list return", () async {
+      test("LocalWrite failure should not affect the language list return",
+          () async {
         setUpRemoteFetchSuccess();
         setUpLocalWriteFailure();
-        final Either<Failure, List<Language>> langList = await languagesRepo.fetch();
+        final Either<Failure, List<Language>> langList =
+            await languagesRepo.fetch();
         expect(langList.isRight(), isTrue);
       });
     });
@@ -101,23 +107,29 @@ void main() {
       verify(localDataSource.fetch());
     });
 
-    test("Local Fetch should be of type Either<Failure, List<Language>>", () async {
+    test("Local Fetch should be of type Either<Failure, List<Language>>",
+        () async {
       setUpRemoteFetchFailure();
-      final Either<Failure, List<Language>> langList = await languagesRepo.fetch();
+      final Either<Failure, List<Language>> langList =
+          await languagesRepo.fetch();
       expect(langList, isInstanceOf<Either<Failure, List<Language>>>());
     });
 
-    test("isRight should be true on remote fetch failure but local fetch succeeds",
+    test(
+        "isRight should be true on remote fetch failure but local fetch succeeds",
         () async {
       setUpRemoteFetchFailure();
-      final Either<Failure, List<Language>> langList = await languagesRepo.fetch();
+      final Either<Failure, List<Language>> langList =
+          await languagesRepo.fetch();
       expect(langList.isRight(), isTrue);
     });
 
-    test("isLeft should be true on remote fetch failure and local fetch is null",
+    test(
+        "isLeft should be true on remote fetch failure and local fetch is null",
         () async {
       setUpRemoteFetchFailureLocalFetchNull();
-      final Either<Failure, List<Language>> langList = await languagesRepo.fetch();
+      final Either<Failure, List<Language>> langList =
+          await languagesRepo.fetch();
       expect(langList.isLeft(), isTrue);
     });
   });
@@ -128,9 +140,11 @@ void main() {
   }
 
   group("Remote and Local Fetch Failure", () {
-    test("isLeft should be true on both remote and local fetch failure", () async {
+    test("isLeft should be true on both remote and local fetch failure",
+        () async {
       setUpRemoteAndLocalFetchFailure();
-      final Either<Failure, List<Language>> langList = await languagesRepo.fetch();
+      final Either<Failure, List<Language>> langList =
+          await languagesRepo.fetch();
       expect(langList.isLeft(), isTrue);
     });
   });

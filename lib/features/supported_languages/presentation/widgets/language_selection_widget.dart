@@ -12,12 +12,13 @@ class LanguageSelectionWidget extends StatelessWidget {
         return state.map(
           initial: (value) => const CircularProgressIndicator(),
           fetched: (value) {
-            final List<DropdownMenuItem<dynamic>> languagesList = value.languageList
-                .map((e) => DropdownMenuItem(
-                      child: Text(e.name),
-                      value: e.code,
-                    ))
-                .toList();
+            final List<DropdownMenuItem<dynamic>> languagesList =
+                value.languageList
+                    .map((e) => DropdownMenuItem(
+                          child: Text(e.name),
+                          value: e.code,
+                        ))
+                    .toList();
             return DropdownButton<dynamic>(
                 items: languagesList,
                 value: value.selectedLangCode,

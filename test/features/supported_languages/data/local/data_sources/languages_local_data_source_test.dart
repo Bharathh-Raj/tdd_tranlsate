@@ -14,7 +14,8 @@ void main() {
   late MockBox mockBox;
 
   final List<Map<String, dynamic>> langListRawMap =
-      (fixtureAsMap('supported_languages.json')["data"]["languages"] as List<dynamic>)
+      (fixtureAsMap('supported_languages.json')["data"]["languages"]
+              as List<dynamic>)
           .map((rawLang) => rawLang as Map<String, dynamic>)
           .toList();
 
@@ -64,7 +65,8 @@ void main() {
 
     test("Should call put after converting LanguageModel to map", () async {
       setUpWriteSuccess();
-      const LanguageModel languageModel = LanguageModel(name: "Tamil", language: "ta");
+      const LanguageModel languageModel =
+          LanguageModel(name: "Tamil", language: "ta");
       await languagesLocalDataSource.write([languageModel]);
       verify(mockBox.put("LangListKey", [
         {"name": "Tamil", "language": "ta"}
@@ -85,7 +87,8 @@ void main() {
 
     test("LanguageCode should be returned on fetch success", () {
       setUpGetSelectedLangSuccess();
-      final String? selectedLangCode = languagesLocalDataSource.getSelectedLanguageCode();
+      final String? selectedLangCode =
+          languagesLocalDataSource.getSelectedLanguageCode();
       expect(selectedLangCode, "en");
     });
 
@@ -95,7 +98,8 @@ void main() {
 
     test("Should return null when no language selected", () {
       setUpNotSelectedAnyLang();
-      final String? selectedLangCode = languagesLocalDataSource.getSelectedLanguageCode();
+      final String? selectedLangCode =
+          languagesLocalDataSource.getSelectedLanguageCode();
       expect(selectedLangCode, null);
     });
   });

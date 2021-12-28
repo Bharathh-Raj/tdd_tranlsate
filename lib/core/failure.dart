@@ -3,7 +3,8 @@ abstract class Failure {
   String? actualMessage;
   dynamic errorObject;
 
-  Failure({required this.messageToDisplay, this.actualMessage, this.errorObject});
+  Failure(
+      {required this.messageToDisplay, this.actualMessage, this.errorObject});
 
   @override
   bool operator ==(Object other) =>

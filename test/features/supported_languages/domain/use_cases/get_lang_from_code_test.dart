@@ -15,7 +15,8 @@ void main() {
 
   setUp(() {
     mockLanguagesRepo = MockLanguagesRepo();
-    getLangFromCodeUseCase = GetLangFromCodeUseCase(languagesRepo: mockLanguagesRepo);
+    getLangFromCodeUseCase =
+        GetLangFromCodeUseCase(languagesRepo: mockLanguagesRepo);
   });
 
   group("Success Cases", () {

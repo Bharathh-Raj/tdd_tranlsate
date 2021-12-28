@@ -8,5 +8,6 @@ part 'lang_detection.freezed.dart';
 @freezed
 class LangDetection with _$LangDetection {
   const factory LangDetection(
-      {required Detection detection, required Language? language}) = _LangDetection;
+      {required Detection detection,
+      required Language? language}) = _LangDetection;
 }

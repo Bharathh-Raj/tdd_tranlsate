@@ -12,7 +12,8 @@ class DetectLanguagesState with _$DetectLanguagesState {
   const factory DetectLanguagesState.loading() = Loading;
 
   const factory DetectLanguagesState.detected(
-      {required String inputText, required List<LangDetection> detectionList}) = Detected;
+      {required String inputText,
+      required List<LangDetection> detectionList}) = Detected;
 
   const factory DetectLanguagesState.failed(Failure failure) = Failed;
 }

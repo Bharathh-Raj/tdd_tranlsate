@@ -16,10 +16,11 @@ class TranslateRepoImpl implements TranslateRepo {
       required String destLangCode,
       String? sourceLangCode}) async {
     try {
-      final List<Translation> translationList = await remoteTranslateDS.translate(
-          inputText: inputText,
-          destLangCode: destLangCode,
-          sourceLangCode: sourceLangCode);
+      final List<Translation> translationList =
+          await remoteTranslateDS.translate(
+              inputText: inputText,
+              destLangCode: destLangCode,
+              sourceLangCode: sourceLangCode);
       return Right(translationList);
     } catch (e) {
       return Left(FetchFailure(errorObject: e));

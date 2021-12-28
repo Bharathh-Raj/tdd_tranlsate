@@ -4,7 +4,8 @@ import 'package:tdd_translate/core/usecase.dart';
 import 'package:tdd_translate/features/supported_languages/domain/entities/language.dart';
 import 'package:tdd_translate/features/supported_languages/domain/repositories/languages_repo.dart';
 
-class FetchLanguagesUseCase implements UseCaseWithFailure<List<Language>, NoParam> {
+class FetchLanguagesUseCase
+    implements UseCaseWithFailure<List<Language>, NoParam> {
   final LanguagesRepo languagesRepo;
 
   FetchLanguagesUseCase({required this.languagesRepo});

@@ -46,27 +46,32 @@ void main() {
   group("translate() method", () {
     group("Basic cases", () {
       setUpAutoSourceSuccess() {
-        when(mockDio.get(remoteTranslateDS.endPoint, queryParameters: queryAutoSource))
+        when(mockDio.get(remoteTranslateDS.endPoint,
+                queryParameters: queryAutoSource))
             .thenAnswer((_) async => responseOfAutoSource);
       }
 
       test("get() method of Dio should be called", () async {
         setUpAutoSourceSuccess();
-        await remoteTranslateDS.translate(inputText: 'test', destLangCode: "ta");
-        verify(mockDio.get(remoteTranslateDS.endPoint, queryParameters: queryAutoSource));
+        await remoteTranslateDS.translate(
+            inputText: 'test', destLangCode: "ta");
+        verify(mockDio.get(remoteTranslateDS.endPoint,
+            queryParameters: queryAutoSource));
       });
     });
 
     group("Success cases for auto source lang", () {
       setUpAutoSourceSuccess() {
-        when(mockDio.get(remoteTranslateDS.endPoint, queryParameters: queryAutoSource))
+        when(mockDio.get(remoteTranslateDS.endPoint,
+                queryParameters: queryAutoSource))
             .thenAnswer((_) async => responseOfAutoSource);
       }
 
-      test("List<TranslationModel> should be returned on translate success", () async {
+      test("List<TranslationModel> should be returned on translate success",
+          () async {
         setUpAutoSourceSuccess();
-        final translationModelList =
-            await remoteTranslateDS.translate(inputText: 'test', destLangCode: "ta");
+        final translationModelList = await remoteTranslateDS.translate(
+            inputText: 'test', destLangCode: "ta");
         expect(translationModelList, isInstanceOf<List<TranslationModel>>());
       });
 
@@ -74,34 +79,37 @@ void main() {
           "sourceLangCode property of TranslationModel should not be null on auto source lang",
           () async {
         setUpAutoSourceSuccess();
-        final translationModelList =
-            await remoteTranslateDS.translate(inputText: 'test', destLangCode: "ta");
+        final translationModelList = await remoteTranslateDS.translate(
+            inputText: 'test', destLangCode: "ta");
         expect(translationModelList.first.sourceLangCode, isNotNull);
       });
     });
 
     group("Failure cases for auto source lang", () {
       setUpAutoSourceFailure() {
-        when(mockDio.get(remoteTranslateDS.endPoint, queryParameters: queryAutoSource))
+        when(mockDio.get(remoteTranslateDS.endPoint,
+                queryParameters: queryAutoSource))
             .thenThrow(Exception());
       }
 
       test("Exception should be thrown on exception", () async {
         setUpAutoSourceFailure();
         expect(
-            () async =>
-                await remoteTranslateDS.translate(inputText: 'test', destLangCode: "ta"),
+            () async => await remoteTranslateDS.translate(
+                inputText: 'test', destLangCode: "ta"),
             throwsA(TypeMatcher<Exception>()));
       });
     });
 
     group("Success cases for manual source lang", () {
       setUpAutoSourceSuccess() {
-        when(mockDio.get(remoteTranslateDS.endPoint, queryParameters: queryWithSource))
+        when(mockDio.get(remoteTranslateDS.endPoint,
+                queryParameters: queryWithSource))
             .thenAnswer((_) async => responseOfManualSource);
       }
 
-      test("List<TranslationModel> should be returned on translate success", () async {
+      test("List<TranslationModel> should be returned on translate success",
+          () async {
         setUpAutoSourceSuccess();
         final translationModelList = await remoteTranslateDS.translate(
             inputText: 'test', destLangCode: "ta", sourceLangCode: "en");
@@ -120,7 +128,8 @@ void main() {
 
     group("Failure cases for manual source lang", () {
       setUpAutoSourceFailure() {
-        when(mockDio.get(remoteTranslateDS.endPoint, queryParameters: queryWithSource))
+        when(mockDio.get(remoteTranslateDS.endPoint,
+                queryParameters: queryWithSource))
             .thenThrow(Exception());
       }
 

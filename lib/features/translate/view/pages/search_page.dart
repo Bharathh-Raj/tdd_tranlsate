@@ -59,8 +59,9 @@ class _SearchPageState extends State<SearchPage> {
                   flex: 1,
                   child: ElevatedButton(
                     onPressed: () {
-                      context.read<DetectLanguagesBloc>().add(DetectLanguagesEvent.detect(
-                          inputText: textEditingController.text));
+                      context.read<DetectLanguagesBloc>().add(
+                          DetectLanguagesEvent.detect(
+                              inputText: textEditingController.text));
                     },
                     child: const Text("Detect"),
                   ),
@@ -73,10 +74,12 @@ class _SearchPageState extends State<SearchPage> {
                   child: ElevatedButton(
                     onPressed: context.read<LanguagesBloc>().state is Fetched
                         ? () {
-                            context.read<TranslateBloc>().add(TranslateEvent.translate(
-                                inputText: textEditingController.text,
-                                destLangCode:
-                                    (context.read<LanguagesBloc>().state as Fetched)
+                            context.read<TranslateBloc>().add(
+                                TranslateEvent.translate(
+                                    inputText: textEditingController.text,
+                                    destLangCode: (context
+                                            .read<LanguagesBloc>()
+                                            .state as Fetched)
                                         .selectedLangCode));
                           }
                         : null,
