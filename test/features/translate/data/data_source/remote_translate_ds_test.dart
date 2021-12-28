@@ -97,7 +97,7 @@ void main() {
         expect(
             () async => await remoteTranslateDS.translate(
                 inputText: 'test', destLangCode: "ta"),
-            throwsA(TypeMatcher<Exception>()));
+            throwsA(const TypeMatcher<Exception>()));
       });
     });
 
@@ -138,7 +138,7 @@ void main() {
         expect(
             () async => await remoteTranslateDS.translate(
                 inputText: 'test', destLangCode: "ta", sourceLangCode: "en"),
-            throwsA(TypeMatcher<Exception>()));
+            throwsA(const TypeMatcher<Exception>()));
       });
     });
   });
