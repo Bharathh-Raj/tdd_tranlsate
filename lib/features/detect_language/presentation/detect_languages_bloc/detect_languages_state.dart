@@ -11,6 +11,8 @@ class DetectLanguagesState with _$DetectLanguagesState {
 
   const factory DetectLanguagesState.loading() = Loading;
 
+  const factory DetectLanguagesState.empty() = Empty;
+
   const factory DetectLanguagesState.detected(
       {required String inputText,
       required List<LangDetection> detectionList}) = Detected;

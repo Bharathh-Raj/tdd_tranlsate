@@ -13,6 +13,7 @@ class DetectedLanguagesWidget extends StatelessWidget {
         return state.map(
           initial: (_) => const SizedBox(),
           loading: (_) => const CircularProgressIndicator(),
+          empty: (_) => const Text("Input text to be detected"),
           detected: (value) {
             return Column(
               children: [

@@ -30,6 +30,10 @@ class DetectLanguagesBloc
   }
 
   Future<void> mapDetectEventToState(String inputText, Emitter emit) async {
+    if (inputText.isEmpty) {
+      emit(const DetectLanguagesState.empty());
+      return;
+    }
     Either<Failure, List<Detection>> detectionList =
         await detectLangUseCase(inputText);
     emit(await detectionList.fold((l) => DetectLanguagesState.failed(l),
