@@ -7,32 +7,41 @@ class LanguageSelectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LanguagesBloc, LanguagesState>(
-      builder: (context, state) {
-        return state.map(
-          initial: (value) => const CircularProgressIndicator(),
-          fetched: (value) {
-            final List<DropdownMenuItem<dynamic>> languagesList =
-                value.languageList
-                    .map((e) => DropdownMenuItem(
-                          child: Text(e.name),
-                          value: e.code,
-                        ))
-                    .toList();
-            return DropdownButton<dynamic>(
-                items: languagesList,
-                value: value.selectedLangCode,
-                onChanged: (changedValue) {
-                  context
-                      .read<LanguagesBloc>()
-                      .add(LanguagesEvent.putSelectedLang(changedValue));
-                });
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Text(
+          "Translate to:",
+          style: Theme.of(context).textTheme.headline6,
+        ),
+        BlocBuilder<LanguagesBloc, LanguagesState>(
+          builder: (context, state) {
+            return state.map(
+              initial: (value) => const CircularProgressIndicator(),
+              fetched: (value) {
+                final List<DropdownMenuItem<dynamic>> languagesList =
+                    value.languageList
+                        .map((e) => DropdownMenuItem(
+                              child: Text(e.name),
+                              value: e.code,
+                            ))
+                        .toList();
+                return DropdownButton<dynamic>(
+                    items: languagesList,
+                    value: value.selectedLangCode,
+                    onChanged: (changedValue) {
+                      context
+                          .read<LanguagesBloc>()
+                          .add(LanguagesEvent.putSelectedLang(changedValue));
+                    });
+              },
+              failure: (value) {
+                return const Text("Something went wrong");
+              },
+            );
           },
-          failure: (value) {
-            return const Text("Something went wrong");
-          },
-        );
-      },
+        ),
+      ],
     );
   }
 }

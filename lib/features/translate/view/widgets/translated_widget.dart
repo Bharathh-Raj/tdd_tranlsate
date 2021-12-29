@@ -14,22 +14,32 @@ class TranslatedWidget extends StatelessWidget {
           initial: (_) => const SizedBox(),
           loading: (_) => const CircularProgressIndicator(),
           translated: (value) {
-            return Expanded(
-              child: ListView.builder(
-                itemCount: value.translationWrapperList.length,
-                itemBuilder: (context, index) {
-                  final TranslationWrapper translationWrapper =
-                      value.translationWrapperList[index];
-                  return Card(
-                      child: ListTile(
-                    title: Text(translationWrapper.translation.translatedText),
-                    subtitle: Text(translationWrapper.sourceLang?.name ??
-                        translationWrapper.sourceLangCode),
-                    trailing: Text(translationWrapper.destLang?.name ??
-                        translationWrapper.destLangCode),
-                  ));
-                },
-              ),
+            return Column(
+              children: [
+                Text(
+                  "Translated Texts",
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                SizedBox(
+                  height: 200,
+                  child: ListView.builder(
+                    itemCount: value.translationWrapperList.length,
+                    itemBuilder: (context, index) {
+                      final TranslationWrapper translationWrapper =
+                          value.translationWrapperList[index];
+                      return Card(
+                          child: ListTile(
+                        title:
+                            Text(translationWrapper.translation.translatedText),
+                        subtitle: Text(translationWrapper.sourceLang?.name ??
+                            translationWrapper.sourceLangCode),
+                        trailing: Text(translationWrapper.destLang?.name ??
+                            translationWrapper.destLangCode),
+                      ));
+                    },
+                  ),
+                ),
+              ],
             );
           },
           failure: (value) => Text(value.failure.messageToDisplay),

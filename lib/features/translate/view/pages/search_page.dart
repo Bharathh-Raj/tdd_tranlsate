@@ -30,63 +30,73 @@ class _SearchPageState extends State<SearchPage> {
         title: const Text('TDD Translate'),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const LanguageSelectionWidget(),
-            TextField(
-              controller: textEditingController,
-              textInputAction: TextInputAction.go,
+            Column(
+              children: [
+                TextField(
+                  controller: textEditingController,
+                  textInputAction: TextInputAction.go,
+                  maxLines: 5,
+                  decoration: InputDecoration(
+                    labelText: "Input text",
+                    border:
+                        OutlineInputBorder(borderSide: BorderSide(width: 2.0)),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      borderSide: BorderSide(width: 2.0),
+                    ),
+                  ),
+                ),
+                const LanguageSelectionWidget(),
+              ],
             ),
             const SizedBox(
               height: 24,
             ),
-            Text(
-              "Detected Languages",
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            const DetectedLanguagesWidget(),
-            Text(
-              "Translated Texts",
-              style: Theme.of(context).textTheme.headline6,
-            ),
             const TranslatedWidget(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      context.read<DetectLanguagesBloc>().add(
-                          DetectLanguagesEvent.detect(
-                              inputText: textEditingController.text));
-                    },
-                    child: const Text("Detect"),
-                  ),
-                ),
-                const SizedBox(
-                  width: 24,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: ElevatedButton(
-                    onPressed: context.read<LanguagesBloc>().state is Fetched
-                        ? () {
-                            context.read<TranslateBloc>().add(
-                                TranslateEvent.translate(
-                                    inputText: textEditingController.text,
-                                    destLangCode: (context
-                                            .read<LanguagesBloc>()
-                                            .state as Fetched)
-                                        .selectedLangCode));
-                          }
-                        : null,
-                    child: const Text("Translate"),
-                  ),
-                ),
-              ],
+            const DetectedLanguagesWidget(),
+            BlocBuilder<LanguagesBloc, LanguagesState>(
+              builder: (context, state) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          context.read<DetectLanguagesBloc>().add(
+                              DetectLanguagesEvent.detect(
+                                  inputText: textEditingController.text));
+                        },
+                        child: const Text("Detect"),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 24,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: ElevatedButton(
+                        onPressed: state.maybeMap(
+                          orElse: () => null,
+                          fetched: (value) {
+                            return () {
+                              context.read<TranslateBloc>().add(
+                                  TranslateEvent.translate(
+                                      inputText: textEditingController.text,
+                                      destLangCode: value.selectedLangCode));
+                            };
+                          },
+                        ),
+                        child: const Text("Translate"),
+                      ),
+                    ),
+                  ],
+                );
+              },
             )
           ],
         ),

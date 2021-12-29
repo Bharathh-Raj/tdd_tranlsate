@@ -13,9 +13,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'TDD Translate',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData.dark(),
       home: MultiBlocProvider(providers: [
         BlocProvider<LanguagesBloc>(
           create: (context) => LanguagesBloc(

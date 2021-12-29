@@ -14,22 +14,32 @@ class DetectedLanguagesWidget extends StatelessWidget {
           initial: (_) => const SizedBox(),
           loading: (_) => const CircularProgressIndicator(),
           detected: (value) {
-            return Expanded(
-              child: ListView.builder(
-                itemCount: value.detectionList.length,
-                itemBuilder: (context, index) {
-                  final LangDetection langDetection =
-                      value.detectionList[index];
-                  return Card(
-                      child: ListTile(
-                    title: Text(langDetection.language?.name ??
-                        langDetection.detection.langCode),
-                    subtitle: Text(langDetection.detection.accuracy.toString()),
-                    trailing:
-                        Text(langDetection.detection.isReliable.toString()),
-                  ));
-                },
-              ),
+            return Column(
+              children: [
+                Text(
+                  "Detected Languages",
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                SizedBox(
+                  height: 200,
+                  child: ListView.builder(
+                    itemCount: value.detectionList.length,
+                    itemBuilder: (context, index) {
+                      final LangDetection langDetection =
+                          value.detectionList[index];
+                      return Card(
+                          child: ListTile(
+                        title: Text(langDetection.language?.name ??
+                            langDetection.detection.langCode),
+                        subtitle:
+                            Text(langDetection.detection.accuracy.toString()),
+                        trailing:
+                            Text(langDetection.detection.isReliable.toString()),
+                      ));
+                    },
+                  ),
+                ),
+              ],
             );
           },
           failed: (value) => Text(value.failure.messageToDisplay),
