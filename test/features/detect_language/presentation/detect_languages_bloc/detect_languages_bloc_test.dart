@@ -71,6 +71,16 @@ void main() {
     );
 
     blocTest<DetectLanguagesBloc, DetectLanguagesState>(
+      "Detect lang event with empty string must emit Empty state",
+      build: () => detectLanguagesBloc,
+      act: (bloc) => bloc.add(const DetectLanguagesEvent.detect(inputText: "")),
+      expect: () => <DetectLanguagesState>[
+        const DetectLanguagesState.loading(),
+        const DetectLanguagesState.empty(),
+      ],
+    );
+
+    blocTest<DetectLanguagesBloc, DetectLanguagesState>(
       "Loading state and Detected state must be emitted on detection success",
       build: () => detectLanguagesBloc,
       setUp: () {

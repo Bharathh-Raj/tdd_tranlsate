@@ -74,6 +74,16 @@ void main() {
       }
 
       blocTest<TranslateBloc, TranslateState>(
+          "Translate event with empty string must emit Empty state",
+          build: () => translateBloc,
+          act: (bloc) => bloc.add(const TranslateEvent.translate(
+              inputText: "", destLangCode: "ta")),
+          expect: () => <TranslateState>[
+                const TranslateState.loading(),
+                const TranslateState.empty(),
+              ]);
+
+      blocTest<TranslateBloc, TranslateState>(
         "getLangFromCodeUseCase must be called on translate success",
         build: () => translateBloc,
         setUp: setUpTranslateWithAutoSourceSuccess,
