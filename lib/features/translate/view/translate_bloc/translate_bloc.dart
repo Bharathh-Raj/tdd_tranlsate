@@ -30,6 +30,10 @@ class TranslateBloc extends Bloc<TranslateEvent, TranslateState> {
 
   Future<void> _mapTranslateEventToState(
       event, Emitter<TranslateState> emit) async {
+    if (event.inputText.isEmpty) {
+      emit(const TranslateState.empty());
+      return;
+    }
     final Either<Failure, List<Translation>> translateResult =
         await translateUseCase(TranslationParam(
             inputText: event.inputText,

@@ -13,6 +13,7 @@ class TranslatedWidget extends StatelessWidget {
         return state.map(
           initial: (_) => const SizedBox(),
           loading: (_) => const CircularProgressIndicator(),
+          empty: (_) => Text("Input text to translate"),
           translated: (value) {
             return Column(
               children: [

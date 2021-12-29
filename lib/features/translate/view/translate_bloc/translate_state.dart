@@ -11,6 +11,8 @@ class TranslateState with _$TranslateState {
 
   const factory TranslateState.loading() = _loading;
 
+  const factory TranslateState.empty() = _empty;
+
   const factory TranslateState.translated(
       {required List<TranslationWrapper> translationWrapperList}) = _translated;
 
