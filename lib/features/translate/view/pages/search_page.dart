@@ -31,22 +31,21 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: ListView(
           children: [
             Column(
               children: [
                 TextField(
                   controller: textEditingController,
                   textInputAction: TextInputAction.go,
-                  maxLines: 5,
+                  maxLines: 4,
                   decoration: InputDecoration(
                     labelText: "Input text",
                     border:
                         OutlineInputBorder(borderSide: BorderSide(width: 2.0)),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
-                      borderSide: BorderSide(width: 2.0),
+                      borderSide: BorderSide(width: 2.0, color: Colors.white54),
                     ),
                   ),
                 ),

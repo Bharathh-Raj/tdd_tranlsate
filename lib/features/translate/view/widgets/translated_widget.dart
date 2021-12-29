@@ -12,13 +12,13 @@ class TranslatedWidget extends StatelessWidget {
       builder: (context, state) {
         return state.map(
           initial: (_) => const SizedBox(),
-          loading: (_) => const CircularProgressIndicator(),
+          loading: (_) => Center(child: const CircularProgressIndicator()),
           empty: (_) => Text("Input text to translate"),
           translated: (value) {
             return Column(
               children: [
                 Text(
-                  "Translated Texts",
+                  "Translated Text",
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 SizedBox(
@@ -30,12 +30,36 @@ class TranslatedWidget extends StatelessWidget {
                           value.translationWrapperList[index];
                       return Card(
                           child: ListTile(
-                        title:
-                            Text(translationWrapper.translation.translatedText),
-                        subtitle: Text(translationWrapper.sourceLang?.name ??
-                            translationWrapper.sourceLangCode),
-                        trailing: Text(translationWrapper.destLang?.name ??
-                            translationWrapper.destLangCode),
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  translationWrapper.sourceLang?.name ??
+                                      translationWrapper.sourceLangCode,
+                                  style: Theme.of(context).textTheme.caption,
+                                ),
+                                Icon(
+                                  Icons.arrow_right_alt_rounded,
+                                  color: Colors.white70,
+                                  size: 24,
+                                ),
+                                Text(
+                                  translationWrapper.destLang?.name ??
+                                      translationWrapper.destLangCode,
+                                  style: Theme.of(context).textTheme.caption,
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: Text(translationWrapper
+                                  .translation.translatedText),
+                            ),
+                          ],
+                        ),
                       ));
                     },
                   ),
@@ -49,3 +73,12 @@ class TranslatedWidget extends StatelessWidget {
     );
   }
 }
+
+// class TranslatedTextWidget extends StatelessWidget {
+//   const TranslatedTextWidget({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container();
+//   }
+// }

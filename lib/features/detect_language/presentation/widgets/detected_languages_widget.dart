@@ -12,8 +12,8 @@ class DetectedLanguagesWidget extends StatelessWidget {
       builder: (context, state) {
         return state.map(
           initial: (_) => const SizedBox(),
-          loading: (_) => const CircularProgressIndicator(),
-          empty: (_) => const Text("Input text to be detected"),
+          loading: (_) => Center(child: const CircularProgressIndicator()),
+          empty: (_) => const Text("Input text to detect"),
           detected: (value) {
             return Column(
               children: [
@@ -32,10 +32,12 @@ class DetectedLanguagesWidget extends StatelessWidget {
                           child: ListTile(
                         title: Text(langDetection.language?.name ??
                             langDetection.detection.langCode),
-                        subtitle:
-                            Text(langDetection.detection.accuracy.toString()),
-                        trailing:
-                            Text(langDetection.detection.isReliable.toString()),
+                        subtitle: Text((langDetection.detection.accuracy * 100)
+                                .toInt()
+                                .toString() +
+                            "%"),
+                        trailing: Text(
+                            langDetection.detection.isReliable ? "💯" : "🤔"),
                       ));
                     },
                   ),
