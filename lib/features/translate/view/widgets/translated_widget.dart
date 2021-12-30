@@ -11,8 +11,13 @@ class TranslatedWidget extends StatelessWidget {
     return BlocBuilder<TranslateBloc, TranslateState>(
       builder: (context, state) {
         return state.map(
-          initial: (_) => const SizedBox(),
-          loading: (_) => Center(child: const CircularProgressIndicator()),
+          initial: (_) => const SizedBox(
+            key: ValueKey("Translate Initial State"),
+          ),
+          loading: (_) => Center(
+              child: const CircularProgressIndicator(
+            key: ValueKey("Translate Loading State"),
+          )),
           empty: (_) => Text("Input text to translate"),
           translated: (value) {
             return Column(
@@ -40,6 +45,9 @@ class TranslatedWidget extends StatelessWidget {
                                   translationWrapper.sourceLang?.name ??
                                       translationWrapper.sourceLangCode,
                                   style: Theme.of(context).textTheme.caption,
+                                  key: ValueKey("Source is " +
+                                      (translationWrapper.sourceLang?.name ??
+                                          translationWrapper.sourceLangCode)),
                                 ),
                                 Icon(
                                   Icons.arrow_right_alt_rounded,
@@ -50,6 +58,9 @@ class TranslatedWidget extends StatelessWidget {
                                   translationWrapper.destLang?.name ??
                                       translationWrapper.destLangCode,
                                   style: Theme.of(context).textTheme.caption,
+                                  key: ValueKey("Dest is " +
+                                      (translationWrapper.destLang?.name ??
+                                          translationWrapper.destLangCode)),
                                 ),
                               ],
                             ),
