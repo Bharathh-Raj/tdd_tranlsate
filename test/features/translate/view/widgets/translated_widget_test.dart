@@ -25,6 +25,11 @@ void main() {
     when(mockBloc.stream).thenAnswer((_) => stateStreamController.stream);
   });
 
+  tearDown(() {
+    stateStreamController.close();
+    mockBloc.close();
+  });
+
   group("Simple cases", () {
     testWidgets("SizedBox should be built on initial State", (tester) async {
       when(mockBloc.state).thenReturn(TranslateState.initial());
