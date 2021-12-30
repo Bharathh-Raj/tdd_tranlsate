@@ -19,7 +19,7 @@ Future<void> buildMaterialWidget_BlocProvider<T extends BlocBase>(
     MaterialApp(
       home: BlocProvider<T>.value(
         value: bloc,
-        child: child,
+        child: Scaffold(body: child),
       ),
     ),
   );

@@ -17,16 +17,21 @@ class LanguageSelectionWidget extends StatelessWidget {
         BlocBuilder<LanguagesBloc, LanguagesState>(
           builder: (context, state) {
             return state.map(
-              initial: (value) => const CircularProgressIndicator(),
+              initial: (value) => const CircularProgressIndicator(
+                key: ValueKey("Languages initial state"),
+              ),
               fetched: (value) {
                 final List<DropdownMenuItem<dynamic>> languagesList =
                     value.languageList
                         .map((e) => DropdownMenuItem(
+                              key: ValueKey("Item is " + e.name),
                               child: Text(e.name),
                               value: e.code,
                             ))
                         .toList();
                 return DropdownButton<dynamic>(
+                    key:
+                        ValueKey("Button with value " + value.selectedLangCode),
                     items: languagesList,
                     value: value.selectedLangCode,
                     onChanged: (changedValue) {
