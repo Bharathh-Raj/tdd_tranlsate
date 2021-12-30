@@ -55,7 +55,7 @@ void main() {
   });
 
   group("Success cases", () {
-    void setUpTranslatedState() {
+    void setUpTranslatedState({bool shouldLangBeNull = false}) {
       when(mockBloc.state)
           .thenReturn(TranslateState.translated(translationWrapperList: [
         TranslationWrapper(
@@ -64,8 +64,12 @@ void main() {
           sourceLangCode: "en",
           translation: TranslationModel(
               translatedText: "சோதனை உள்ளீடு", sourceLangCode: "en"),
-          sourceLang: LanguageModel(name: "English", language: "en"),
-          destLang: LanguageModel(name: "Tamil", language: "ta"),
+          sourceLang: shouldLangBeNull
+              ? null
+              : LanguageModel(name: "English", language: "en"),
+          destLang: shouldLangBeNull
+              ? null
+              : LanguageModel(name: "Tamil", language: "ta"),
         ),
       ]));
     }
@@ -100,6 +104,24 @@ void main() {
       await buildMaterialWidget_BlocProvider<TranslateBloc>(
           tester: tester, bloc: mockBloc, child: TranslatedWidget());
       expect(find.byKey(ValueKey("Dest is Tamil")), findsOneWidget);
+    });
+
+    testWidgets(
+        "Source text as en should be built on translated State with lang null",
+        (tester) async {
+      setUpTranslatedState(shouldLangBeNull: true);
+      await buildMaterialWidget_BlocProvider<TranslateBloc>(
+          tester: tester, bloc: mockBloc, child: TranslatedWidget());
+      expect(find.byKey(ValueKey("Source is en")), findsOneWidget);
+    });
+
+    testWidgets(
+        "Dest text as ta should be built on translated State with lang null",
+        (tester) async {
+      setUpTranslatedState(shouldLangBeNull: true);
+      await buildMaterialWidget_BlocProvider<TranslateBloc>(
+          tester: tester, bloc: mockBloc, child: TranslatedWidget());
+      expect(find.byKey(ValueKey("Dest is ta")), findsOneWidget);
     });
   });
 
